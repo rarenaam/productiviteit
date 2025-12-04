@@ -11,7 +11,7 @@
 
 	h1 {
 		color: #ffffff;
-		font-size: 30px;
+		font-size: clamp(1px, 1vw + 1vh + 50px, 64px);
 		top: 8%;
 		position: fixed;
 	}
@@ -22,7 +22,7 @@
 			color: white;
 			padding: 10px;
 			border-radius: 5px;
-			font-size: 16px;
+			font-size: clamp(1px, 1vw + 1vh + 50px, 64px);
 			text-align: center;
 			transition: background-color 0.3s ease, color 0.3s ease;
 			border:2px solid #007FFF;
@@ -142,7 +142,7 @@
 			<a href="spreadsheet.html" class="button" id="buttonSpreadsheet">spreadsheet</a>
 
 
-	<div class="rechthoek"></div>
+	<div class="rechthoek"></div> 
 	
 	<textarea id="noteInput" placeholder="Typ hier je notitie..."></textarea><br>
 	<button class="button" id="buttonDelete" onclick="clearNote()">verwijderen</button>
