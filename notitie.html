@@ -83,15 +83,15 @@
 	}
 
 	textarea {
-		width: 100%;
-		height: clamp(100px, 1vw + 1vh, 600px);
+		width: clamp(100px, 100% - 40px, 2000px);
+		height: clamp(100px, 1vw + 30vh, 600px);
 		padding: 10px;
-		font-size: 24px;
+		font-size: clamp(10px, 2vw + 2vh, 480px);
 		background-color: #525252;
 		border: 1px solid #ccc;
 		border-radius: 5px;
 		resize: none;
-		top: 15%;
+		top: 17%;
 		position: fixed;
 	}
 
@@ -103,8 +103,8 @@
 		border:2px solid #FF4D4D;
 		color: #FF4D4D;
 		position: fixed;
-		top: 50%;
-		margin-left: 110px;
+		top: 51%;
+		margin-left:calc(5% + 50px);;
 
 	}
 
@@ -121,9 +121,10 @@
 		background-color: #4a4a4a;
 		border:2px solid #007FFF;
 		position: fixed;
-		top: 50%;
-		width: 90px;
+		top: 51%;
+		
 		color:#007FFF;
+		width: calc(4% + 50px);
 		 ;
 	}
 
