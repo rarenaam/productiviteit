@@ -1,20 +1,27 @@
-const textarea = document.getElementById("noteInput");
+function saveNote() {
+    const textarea = document.getElementById("noteInput");
+    const text = textarea.value;
+    // LocalStorage opslaan
+    localStorage.setItem("mijnNotitie", text);
 
-		window.onload = () => {
-			const savedNote = localStorage.getItem("mijnNotitie");
-			if (savedNote) {
-				textarea.value = savedNote
-			}
-		};
+    // Datum + tijd voor bestandsnaam
+    const now = new Date();
+    const timestamp =
+        now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, "0") + "-" +
+        String(now.getDate()).padStart(2, "0") + "_" +
+        String(now.getHours()).padStart(2, "0") + "-" +
+        String(now.getMinutes()).padStart(2, "0");
 
-		function saveNote() {
-			localStorage.setItem("mijnNotitie", textarea.value);
-			alert("notitie opgeslagen")
-		}
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
 
-		function clearNote() {
-			if (confirm('Weet je zeker dat je alles wilt verwijderen?')) {
-				localStorage.removeItem('mijnNotitie');
-				textarea.value = '';
-			}
-		}
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `notitie_${timestamp}.txt`;
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+    alert("notitie opgeslagen en gedownload");
+}
