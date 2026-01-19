@@ -1,27 +1,74 @@
-function saveNote() {
-    const textarea = document.getElementById("noteInput");
-    const text = textarea.value;
-    // LocalStorage opslaan
-    localStorage.setItem("mijnNotitie", text);
+let notes = [
+  { id: Date.now(), title: "Meeting Prep", content: "- Review Q3 report\n- Prepare slides" }
+];
 
-    // Datum + tijd voor bestandsnaam
-    const now = new Date();
-    const timestamp =
-        now.getFullYear() + "-" +
-        String(now.getMonth() + 1).padStart(2, "0") + "-" +
-        String(now.getDate()).padStart(2, "0") + "_" +
-        String(now.getHours()).padStart(2, "0") + "-" +
-        String(now.getMinutes()).padStart(2, "0");
+let selectedNoteId = notes[0] ? notes[0].id : null;
 
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
+const notesList = document.getElementById("notesList");
+const noteTitle = document.getElementById("noteTitle");
+const noteContent = document.getElementById("noteContent");
+const addNoteBtn = document.getElementById("addNoteBtn");
+const deleteNoteBtn = document.getElementById("deleteNoteBtn");
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `notitie_${timestamp}.txt`;
-    a.click();
-
-    URL.revokeObjectURL(url);
-
-    alert("notitie opgeslagen en gedownload");
+function renderNotes() {
+  notesList.innerHTML = "";
+  notes.forEach(note => {
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.textContent = note.title;
+    btn.onclick = () => selectNote(note.id);
+    if (note.id === selectedNoteId) btn.style.fontWeight = "bold";
+    li.appendChild(btn);
+    notesList.appendChild(li);
+  });
+  renderSelectedNote();
 }
+
+function selectNote(id) {
+  selectedNoteId = id;
+  renderNotes();
+}
+
+function renderSelectedNote() {
+  const note = notes.find(n => n.id === selectedNoteId);
+  if (note) {
+    noteTitle.value = note.title;
+    noteContent.value = note.content;
+    noteTitle.disabled = false;
+    noteContent.disabled = false;
+    deleteNoteBtn.disabled = false;
+  } else {
+    noteTitle.value = "";
+    noteContent.value = "";
+    noteTitle.disabled = true;
+    noteContent.disabled = true;
+    deleteNoteBtn.disabled = true;
+  }
+}
+
+noteTitle.addEventListener("input", () => {
+  const note = notes.find(n => n.id === selectedNoteId);
+  if (note) note.title = noteTitle.value;
+  renderNotes();
+});
+
+noteContent.addEventListener("input", () => {
+  const note = notes.find(n => n.id === selectedNoteId);
+  if (note) note.content = noteContent.value;
+});
+
+addNoteBtn.addEventListener("click", () => {
+  const newNote = { id: Date.now(), title: "New Note", content: "" };
+  notes.unshift(newNote);
+  selectedNoteId = newNote.id;
+  renderNotes();
+});
+
+deleteNoteBtn.addEventListener("click", () => {
+  notes = notes.filter(n => n.id !== selectedNoteId);
+  selectedNoteId = notes[0] ? notes[0].id : null;
+  renderNotes();
+});
+
+// initial render
+renderNotes();
