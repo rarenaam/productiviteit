@@ -4,7 +4,6 @@
   --border: #334155;
   --text: #e5e7eb;
   --event: #2563eb;
-  --event-text: #ffffff;
 }
 
 body {
@@ -14,29 +13,48 @@ body {
   color: var(--text);
 }
 
-header {
+/* topbar */
+.topbar {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
 }
 
-button {
+/* menu */
+.menu {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  right: 0;
   background: var(--bg-light);
-  color: var(--text);
-  border: 1px solid var(--border);
-  padding: 0.4rem 0.7rem;
-  cursor: pointer;
+  z-index: 50;
 }
 
+.menu button {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.menu button:hover {
+  background: var(--event);
+}
+
+.hidden { display: none; }
+
+/* agenda */
 table {
   width: 98%;
   border-collapse: collapse;
+  margin: auto;
 }
 
-th,
-td {
+th, td {
   border: 1px solid var(--border);
 }
 
@@ -45,11 +63,6 @@ th {
   padding: 0.5rem;
 }
 
-td {
-  padding: 0;
-}
-
-/* tijdkolom */
 .time {
   width: 80px;
   text-align: center;
@@ -58,25 +71,43 @@ td {
   color: #94a3b8;
 }
 
-
-
-/* event input */
 input {
   width: 100%;
   height: 100%;
   background: transparent;
   border: none;
-  color: var(--event-text);
+  color: white;
   padding: 6px;
-  font-size: 0.85rem;
 }
 
 input:not(:placeholder-shown) {
   background: var(--event);
 }
 
-input:focus {
-  outline: none;
+.pause {
+  text-align: center;
+  background: #020617;
+  color: #94a3b8;
+}
+
+/* notes */
+.notes-wrapper {
+  padding: 1rem;
+}
+
+.notes-wrapper textarea {
+  width: 100%;
+  height: calc(100vh - 120px);
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 1rem;
+  resize: none;
+}
+
+/* now indicator */
+.agenda-wrapper {
+  position: relative;
 }
 
 .now-indicator {
@@ -86,11 +117,4 @@ input:focus {
   height: 2px;
   background: red;
   z-index: 20;
-  pointer-events: none;
-}
-
-
-/* nodig voor positionering */
-.agenda-wrapper {
-  position: relative;
 }
