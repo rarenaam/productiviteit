@@ -1,158 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-	<title>notitie</title>
-	<style>
-
-	body {
-		font-family: 'Arial', sans-serif;
-		background-color: #4a4a4a;
-	}
-
-	h1 {
-		color: white;
-		font-size: clamp(5px, 1vw + 3.5vh, 64px);
-		top: 8%;
-		position: fixed;
-	}
-
-	.button {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background-color: #007FFF;
-			color: white;
-			border-radius: 5px;
-			font-size: clamp(1px, 1vw + 1vh, 48px);
-			text-align: center;
-			transition: background-color 0.3s ease, color 0.3s ease;
-			border:1px solid #007FFF;
-			height: 6%;
-	}
-
-	.button:hover {
-			background-color: white;
-			color: #007FFF;
-	}
-
-	.rechthoek {
-				width: 100%;
-				height: 8%;
-				top: 0%;
-				left: 0;
-				background-color: white;
-				position: fixed;
-				z-index: 1;
-	}
-
-	#buttonHome {
-				position: fixed;
-				top: 1%;
-				left: 2%;
-				margin-right: calc(4% + 50px);
-				z-index: 2;
-				width: calc(9% + 50px);
-				
-	}
-
-	#buttonAgenda {
-				position: fixed;
-				top: 1%;
-				margin-right: calc(5% + 50px);
-				z-index: 2;
-				width: calc(11% + 50px);
-				left: calc(12% + 50px);
-	}
-
-	#buttonNotitie {
-				position: fixed;
-				top: 1%;
-				margin-right: calc(3% + 50px);
-				z-index: 2;
-				width: calc(9% + 50px);
-				left: calc(24% + 100px);
-	}
-
-	#buttonSpreadsheet {
-				position: fixed;
-				top: 1%;
-				margin-right: calc(4% + 150px);
-				z-index: 2;
-				width: calc(15% + 50px);
-				left: calc(34% + 150px);
-	}
-
-	textarea {
-		width: clamp(100px, 100% - 40px, 2000px);
-		height: clamp(100px, 1vw + 30vh, 600px);
-		padding: 10px;
-		font-size: clamp(10px, 2vw + 2vh, 480px);
-		background-color: #525252;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		resize: none;
-		top: 17%;
-		position: fixed;
-	}
-
-	#buttonDelete {
-		margin-top: 10px;
-		padding: 10px 15px;
-		cursor: pointer;
-		background-color: #4a4a4a;
-		border:2px solid #FF4D4D;
-		color: #FF4D4D;
-		position: fixed;
-		top: 51%;
-		margin-left:calc(5% + 50px);;
-
-	}
-
-	#buttonDelete:hover {
-		background-color: #FF4D4D;
-		color: white;
-
-	}
-
-	#buttonSave {
-		margin-top: 10px;
-		padding: 10px 15px;
-		cursor: pointer;
-		background-color: #4a4a4a;
-		border:2px solid #007FFF;
-		position: fixed;
-		top: 51%;
-		
-		color:#007FFF;
-		width: calc(4% + 50px);
-		 ;
-	}
-
-	#buttonSave:hover {
-		background-color: #007FFF;
-		color: white;
-	}
-
-	</style>
+  <meta charset="UTF-8">
+  <title>Notes App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-	<h1>notitie</h1>
 
-			<a href="index.html" class="button" id="buttonHome">home</a>
-			<a href="agenda.html" class="button" id="buttonAgenda">agenda</a>
-			<a href="notitie.html" class="button" id="buttonNotitie">notitie</a>
-			<a href="spreadsheet.html" class="button" id="buttonSpreadsheet">spreadsheet</a>
+  <div class="container">
+    <div class="sidebar">
+      <h1>Notes</h1>
+      <button id="addNoteBtn">New Note</button>
+      <ul id="notesList"></ul>
+    </div>
+    <div class="main">
+      <input id="noteTitle" placeholder="Title" />
+      <textarea id="noteContent" placeholder="Start writing your note..."></textarea>
+      <button id="deleteNoteBtn">Delete Note</button>
+    </div>
+  </div>
 
-
-	<div class="rechthoek"></div> 
-	
-	<textarea id="noteInput" placeholder="Typ hier je notitie..."></textarea><br>
-	<button class="button" id="buttonDelete" onclick="clearNote()">verwijderen</button>
-	<button class="button" id="buttonSave" onclick="saveNote()">opslaan</button>
-
-	<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
-
 </html>
