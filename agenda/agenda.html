@@ -6,16 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark">
+<body>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <button id="prev">◀</button>
-    <h1 id="weekLabel">Agenda</h1>
-    <button id="next">▶</button>
-  </header>
+<header class="topbar">
+  <button id="burger">☰</button>
+  <h1 id="weekLabel">Agenda</h1>
+  <div></div>
+</header>
 
-  <!-- AGENDA -->
+<div id="menu" class="menu hidden">
+  <button data-view="agenda">Agenda</button>
+  <button data-view="notes">Notities</button>
+</div>
+
+<!-- AGENDA -->
+<div id="agenda-view">
   <div class="agenda-wrapper">
     <table>
       <thead>
@@ -24,7 +29,15 @@
       <tbody id="agendaBody"></tbody>
     </table>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<!-- NOTITIES -->
+<div id="notes-view" hidden>
+  <div class="notes-wrapper">
+    <textarea id="notes" placeholder="Schrijf hier je notities..."></textarea>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
