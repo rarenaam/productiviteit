@@ -148,4 +148,38 @@ function addNowIndicator() {
 
   const indicator = document.createElement("div");
   indicator.className = "now-indicator";
-  indicator.style.top = `${(activeMinutes / totalMinutes)
+  indicator.style.top = `${(activeMinutes / totalMinutes) * totalHeight}px`;
+
+  document.querySelector(".agenda-wrapper").appendChild(indicator);
+}
+
+/* ---------- navigation ---------- */
+document.getElementById("prev").onclick = () => {
+  currentDate.setDate(currentDate.getDate() - 7);
+  render();
+};
+document.getElementById("next").onclick = () => {
+  currentDate.setDate(currentDate.getDate() + 7);
+  render();
+};
+
+/* ---------- burger menu ---------- */
+burger.onclick = () => menu.classList.toggle("hidden");
+
+menu.querySelectorAll("button").forEach(btn => {
+  btn.onclick = () => {
+    const view = btn.dataset.view;
+    agendaView.hidden = view !== "agenda";
+    notesView.hidden = view !== "notes";
+    weekLabel.textContent = view === "agenda" ? "Agenda" : "Notities";
+    menu.classList.add("hidden");
+  };
+});
+
+/* ---------- notes persistence ---------- */
+notesArea.value = localStorage.getItem("notes") || "";
+notesArea.oninput = () => localStorage.setItem("notes", notesArea.value);
+
+/* ---------- init ---------- */
+render();
+setInterval(addNowIndicator, 60000);
