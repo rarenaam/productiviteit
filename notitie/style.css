@@ -1,0 +1,77 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.sidebar h1 {
+  margin-top: 0;
+}
+
+.sidebar button {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  height: calc(100% - 90px);
+}
+
+.sidebar li {
+  margin-bottom: 5px;
+}
+
+.sidebar li button {
+  width: 100%;
+  text-align: left;
+  padding: 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.sidebar li button:hover {
+  background-color: #eee;
+}
+
+.main {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+#noteTitle {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+#noteContent {
+  flex: 1;
+  padding: 5px;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+#deleteNoteBtn {
+  width: 100px;
+  align-self: flex-start;
+  cursor: pointer;
+}
