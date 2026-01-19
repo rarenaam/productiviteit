@@ -2,6 +2,12 @@ const agendaBody = document.getElementById("agendaBody");
 const daysRow = document.getElementById("daysRow");
 const weekLabel = document.getElementById("weekLabel");
 
+const burger = document.getElementById("burger");
+const menu = document.getElementById("menu");
+const agendaView = document.getElementById("agenda-view");
+const notesView = document.getElementById("notes-view");
+const notesArea = document.getElementById("notes");
+
 let currentDate = new Date();
 let events = {};
 
@@ -12,7 +18,7 @@ const PAUSES = [
   { start: "13:05", end: "13:35" },
 ];
 
-// Hulp: converteer "HH:MM" naar Date
+/* ---------- helpers ---------- */
 function parseTime(baseDate, timeStr) {
   const [h, m] = timeStr.split(":").map(Number);
   const d = new Date(baseDate);
@@ -20,16 +26,14 @@ function parseTime(baseDate, timeStr) {
   return d;
 }
 
-// Check of tijd in pauze valt
 function isInPause(time, baseDate) {
   return PAUSES.some(p => {
-    const start = parseTime(baseDate, p.start);
-    const end = parseTime(baseDate, p.end);
-    return time >= start && time < end;
+    const s = parseTime(baseDate, p.start);
+    const e = parseTime(baseDate, p.end);
+    return time >= s && time < e;
   });
 }
 
-// Begin van de week (maandag)
 function startOfWeek(date) {
   const d = new Date(date);
   const day = (d.getDay() + 6) % 7;
@@ -38,7 +42,7 @@ function startOfWeek(date) {
   return d;
 }
 
-// Render de agenda
+/* ---------- render agenda ---------- */
 function render() {
   agendaBody.innerHTML = "";
   daysRow.innerHTML = '<th class="time">Tijd</th>';
@@ -63,36 +67,35 @@ function render() {
 
   while (time < end) {
     const paused = isInPause(time, weekStart);
-
     const tr = document.createElement("tr");
 
-    const rowMinutes = paused ? 20 : 45;
-    tr.style.height = `${rowMinutes * PX_PER_MINUTE}px`;
+    const minutes = paused ? 20 : 45;
+    tr.style.height = `${minutes * PX_PER_MINUTE}px`;
 
-    // Tijd-cel met start - einde
     const timeCell = document.createElement("td");
     timeCell.className = "time";
 
-    const blockEnd = paused
-      ? PAUSES.find(p => parseTime(weekStart, p.start) <= time && time < parseTime(weekStart, p.end))
-      : new Date(time.getTime() + 45 * 60 * 1000);
+    let blockEnd;
+    if (paused) {
+      const p = PAUSES.find(p =>
+        time >= parseTime(weekStart, p.start) &&
+        time < parseTime(weekStart, p.end)
+      );
+      blockEnd = parseTime(weekStart, p.end);
+    } else {
+      blockEnd = new Date(time.getTime() + 45 * 60000);
+    }
 
-    const endText = paused
-      ? parseTime(weekStart, blockEnd.end).toTimeString().slice(0,5)
-      : new Date(blockEnd).toTimeString().slice(0,5);
-
-    timeCell.textContent = `${time.toTimeString().slice(0,5)} - ${endText}`;
+    timeCell.textContent =
+      `${time.toTimeString().slice(0,5)} - ${blockEnd.toTimeString().slice(0,5)}`;
     tr.appendChild(timeCell);
 
-    // Event of pauze
     days.forEach(day => {
       const td = document.createElement("td");
 
       if (paused) {
-        td.style.background = "#020617";
-        td.style.color = "#94a3b8";
-        td.style.textAlign = "center";
         td.textContent = "Pauze";
+        td.className = "pause";
       } else {
         const input = document.createElement("input");
 
@@ -103,97 +106,46 @@ function render() {
         input.value = events[key] || "";
         input.placeholder = "...";
 
-        input.addEventListener("input", () => {
-          if (input.value.trim() === "") {
-            delete events[key];
-          } else {
-            events[key] = input.value;
-          }
-        });
+        input.oninput = () => {
+          if (input.value.trim() === "") delete events[key];
+          else events[key] = input.value;
+        };
 
         td.appendChild(input);
       }
-
       tr.appendChild(td);
     });
 
     agendaBody.appendChild(tr);
-
-    // Volgende tijd
-    if (paused) {
-      const pause = PAUSES.find(p => {
-        const s = parseTime(weekStart, p.start);
-        const e = parseTime(weekStart, p.end);
-        return time >= s && time < e;
-      });
-      time = parseTime(weekStart, pause.end);
-    } else {
-      time = new Date(time.getTime() + 45 * 60 * 1000);
-    }
+    time = blockEnd;
   }
 
   addNowIndicator();
 }
 
-// Vorige / volgende week
-document.getElementById("prev").onclick = () => {
-  currentDate.setDate(currentDate.getDate() - 7);
-  render();
-};
-
-document.getElementById("next").onclick = () => {
-  currentDate.setDate(currentDate.getDate() + 7);
-  render();
-};
-
-function addNowIndicatorWithPauses() {
+/* ---------- now indicator ---------- */
+function addNowIndicator() {
   document.querySelectorAll(".now-indicator").forEach(e => e.remove());
 
   const now = new Date();
   const weekStart = startOfWeek(currentDate);
+  const start = parseTime(weekStart, "08:15");
+  const end = parseTime(weekStart, "18:00");
 
-  const agendaStart = parseTime(weekStart, "08:15");
-  const agendaEnd = parseTime(weekStart, "18:00");
+  if (now < start || now > end) return;
 
-  if (now < agendaStart || now > agendaEnd) return;
-
-  const tbody = document.getElementById("agendaBody");
-  const rows = tbody.querySelectorAll("tr");
-  if (rows.length === 0) return;
-
-  // Bereken totale hoogte van alle tijdblokken
-  let totalHeight = 0;
-  rows.forEach(row => totalHeight += row.offsetHeight);
-
-  // Bereken actieve minuten sinds start (pauzes overslaan)
   let activeMinutes = 0;
-  let t = new Date(agendaStart);
-  while (t < now) {
-    if (!isInPause(t, weekStart)) activeMinutes++;
-    t = new Date(t.getTime() + 60 * 1000);
+  let totalMinutes = 0;
+
+  for (let t = new Date(start); t < end; t.setMinutes(t.getMinutes() + 1)) {
+    if (!isInPause(t, weekStart)) totalMinutes++;
+    if (t < now && !isInPause(t, weekStart)) activeMinutes++;
   }
 
-  // Totale actieve minuten in de dag (excl. pauzes)
-  let totalActiveMinutes = 0;
-  let tmp = new Date(agendaStart);
-  while (tmp < agendaEnd) {
-    if (!isInPause(tmp, weekStart)) totalActiveMinutes++;
-    tmp = new Date(tmp.getTime() + 60 * 1000);
-  }
-
-  const top = (activeMinutes / totalActiveMinutes) * totalHeight;
+  const rows = agendaBody.querySelectorAll("tr");
+  let totalHeight = 0;
+  rows.forEach(r => totalHeight += r.offsetHeight);
 
   const indicator = document.createElement("div");
   indicator.className = "now-indicator";
-  indicator.style.top = `${top}px`;
-
-  const agendaWrapper = document.querySelector(".agenda-wrapper");
-  agendaWrapper.appendChild(indicator);
-}
-
-// Roep aan na render
-addNowIndicatorSimple();
-setInterval(addNowIndicatorSimple, 1000);
-render();
-
-
+  indicator.style.top = `${(activeMinutes / totalMinutes)
