@@ -1,7 +1,17 @@
+:root {
+  --bg: #0f172a;
+  --bg-light: #1e293b;
+  --border: #334155;
+  --text: #e5e7eb;
+  --event: #2563eb;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .container {
@@ -9,11 +19,13 @@ body {
   height: 100vh;
 }
 
+/* Sidebar */
 .sidebar {
   width: 250px;
-  border-right: 1px solid #ccc;
+  border-right: 1px solid var(--border);
   padding: 10px;
   box-sizing: border-box;
+  background: var(--bg-light);
 }
 
 .sidebar h1 {
@@ -23,6 +35,15 @@ body {
 .sidebar button {
   width: 100%;
   margin-bottom: 10px;
+  background: var(--event);
+  color: var(--text);
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.sidebar button:hover {
+  background: #1e40af; /* donkerder blauw voor hover */
 }
 
 .sidebar ul {
@@ -42,25 +63,32 @@ body {
   text-align: left;
   padding: 5px;
   border: none;
-  background: none;
+  background: transparent;
+  color: var(--text);
   cursor: pointer;
 }
 
 .sidebar li button:hover {
-  background-color: #eee;
+  background-color: var(--event);
+  color: var(--text);
 }
 
+/* Main content */
 .main {
   flex: 1;
   padding: 10px;
   display: flex;
   flex-direction: column;
+  background: var(--bg);
 }
 
 #noteTitle {
   font-size: 1.5em;
   margin-bottom: 10px;
   padding: 5px;
+  background: var(--bg-light);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
 #noteContent {
@@ -68,10 +96,21 @@ body {
   padding: 5px;
   resize: none;
   margin-bottom: 10px;
+  background: var(--bg-light);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
 #deleteNoteBtn {
   width: 100px;
   align-self: flex-start;
   cursor: pointer;
+  background: #b91c1c; /* roodachtig voor delete */
+  color: white;
+  border: none;
+  padding: 5px;
+}
+
+#deleteNoteBtn:hover {
+  background: #991b1b;
 }
