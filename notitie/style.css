@@ -148,7 +148,7 @@ body {
 #hamburgerBtn {
   position: fixed;
   top: 10px;
-  left: 260px; /* sidebar (250px) + marge */
+  left: 230px; /* sidebar (250px) + marge */
   z-index: 2000;
   background: var(--event);
   color: var(--text);
