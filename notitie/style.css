@@ -19,6 +19,50 @@ body {
   height: 100vh;
 }
 
+/* Hamburger menu */
+.hamburger {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: var(--event);
+  color: var(--text);
+  border: none;
+  padding: 8px 12px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Navigation drawer */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 200px;
+  background: var(--bg-light);
+  border-right: 1px solid var(--border);
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+}
+
+.nav a {
+  padding: 10px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav a:hover {
+  background: var(--event);
+}
+
+.hidden {
+  display: none;
+}
+
+
 /* Sidebar */
 .sidebar {
   width: 250px;
