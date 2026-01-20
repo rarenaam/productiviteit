@@ -19,21 +19,6 @@ body {
   height: 100vh;
 }
 
-/* Hamburger menu */
-.hamburger {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  background: var(--event);
-  color: var(--text);
-  border: none;
-  padding: 8px 12px;
-  font-size: 20px;
-  cursor: pointer;
-  padding-top: 50px; /* ← DIT TOEVOEGEN */
-}
-
 /* Navigation drawer */
 .nav {
   position: fixed;
