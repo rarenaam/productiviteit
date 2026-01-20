@@ -159,3 +159,16 @@ body {
 #deleteNoteBtn:hover {
   background: #991b1b;
 }
+
+
+body::before {
+  content: "CSS LOADED";
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: red;
+  color: white;
+  padding: 5px;
+  z-index: 99999;
+}
+
