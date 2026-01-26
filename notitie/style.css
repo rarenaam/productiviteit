@@ -14,6 +14,7 @@ body {
   color: var(--text);
 }
 
+/* Container met flex voor sidebar + main */
 .container {
   display: flex;
   height: 100vh;
@@ -34,25 +35,48 @@ body {
   border-radius: 4px;
 }
 
-/* Sidebar */
+/* Navigatie menu (achter hamburger) */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100vh;
+  background: var(--bg-light);
+  border-right: 1px solid var(--border);
+  padding-top: 60px;
+
+  /* Start buiten beeld */
+  transform: translateX(-100%);
+  transition: transform 0.3s ease; /* transitie */
+  z-index: 2500;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav a {
+  padding: 10px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav a:hover {
+  background: var(--event);
+}
+
+/* Als menu zichtbaar is */
+.nav.show {
+  transform: translateX(0);
+}
+
+/* Sidebar (altijd zichtbaar) */
 .sidebar {
   width: 250px;
   border-right: 1px solid var(--border);
   padding: 10px;
   box-sizing: border-box;
   background: var(--bg-light);
-
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  transform: translateX(-100%);       /* standaard buiten beeld */
-  transition: transform 0.3s ease;    /* vloeiende transitie */
-  z-index: 2000;
-}
-
-.sidebar.show {
-  transform: translateX(0);          /* schuift naar binnen */
+  z-index: 2000; /* onder navigatie */
 }
 
 .sidebar h1 {
