@@ -192,8 +192,6 @@ function addNowIndicatorWithPauses() {
 }
 
 // Roep aan na render
-addNowIndicatorSimple();
-setInterval(addNowIndicatorSimple, 1000);
 render();
 
 // Hamburger menu logic
