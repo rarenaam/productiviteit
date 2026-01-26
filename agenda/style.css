@@ -64,19 +64,23 @@ td {
 input {
   width: 100%;
   height: 100%;
-  background: transparent;
-  border: none;
-  color: var(--event-text);
+  background: transparent;       /* geen blauwe balk */
+  border: none;                  /* geen rand */
+  color: #2563eb;                /* blauwe tekst */
   padding: 6px;
   font-size: 0.85rem;
+  transition: background 0.2s, color 0.2s;
 }
 
-input:not(:placeholder-shown) {
-  background: var(--event);
+input::placeholder {
+  color: #94a3b8;                /* lichte grijze placeholder */
+  opacity: 1;
 }
 
 input:focus {
   outline: none;
+  background: rgba(37, 99, 235, 0.1); /* lichtblauwe highlight bij focus */
+  border-radius: 4px;
 }
 
 .now-indicator {
