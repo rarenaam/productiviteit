@@ -157,3 +157,27 @@ body {
   border: none;
   cursor: pointer;
 }
+
+/* Sidebar standaard verborgen buiten beeld */
+.sidebar {
+  width: 250px;
+  border-right: 1px solid var(--border);
+  padding: 10px;
+  box-sizing: border-box;
+  background: var(--bg-light);
+
+  /* TRANSITIE TOEGEVOEGD */
+  position: fixed;          /* fixeer de sidebar */
+  top: 0;
+  left: 0;
+  height: 100vh;
+  transform: translateX(-100%);  /* buiten beeld */
+  transition: transform 0.3s ease; /* <— vloeiende transitie */
+  z-index: 999;
+}
+
+/* Sidebar zichtbaar */
+.sidebar.show {
+  transform: translateX(0); /* schuift naar binnen */
+}
+
