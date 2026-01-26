@@ -196,4 +196,12 @@ addNowIndicatorSimple();
 setInterval(addNowIndicatorSimple, 1000);
 render();
 
+// Hamburger menu logic
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const navMenu = document.getElementById("navMenu");
+
+hamburgerBtn.addEventListener("click", () => {
+  navMenu.classList.toggle("hidden");
+});
+
 
