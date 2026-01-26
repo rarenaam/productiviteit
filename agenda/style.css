@@ -113,3 +113,16 @@ input:focus {
   border-radius: 4px;
 }
 
+.hidden {
+  display: none;
+}
+
+
+#navMenu {
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+}
+
+#navMenu.show {
+  transform: translateX(0);
+}
