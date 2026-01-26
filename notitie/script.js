@@ -78,6 +78,8 @@ const hamburgerBtn = document.getElementById("hamburgerBtn");
 const navMenu = document.getElementById("navMenu");
 
 hamburgerBtn.addEventListener("click", () => {
-  navMenu.classList.toggle("hidden");
+  navMenu.classList.toggle("show");
+});
+
 });
 
