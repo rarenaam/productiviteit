@@ -34,24 +34,25 @@ body {
   border-radius: 4px;
 }
 
-/* Sidebar met transitie */
+/* Sidebar */
 .sidebar {
   width: 250px;
   border-right: 1px solid var(--border);
   padding: 10px;
   box-sizing: border-box;
   background: var(--bg-light);
+
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  transform: translateX(-100%);   /* standaard buiten beeld */
-  transition: transform 0.3s ease; /* vloeiende transitie */
+  transform: translateX(-100%);       /* standaard buiten beeld */
+  transition: transform 0.3s ease;    /* vloeiende transitie */
   z-index: 2000;
 }
 
 .sidebar.show {
-  transform: translateX(0);       /* schuift naar binnen */
+  transform: translateX(0);          /* schuift naar binnen */
 }
 
 .sidebar h1 {
@@ -103,14 +104,12 @@ body {
 .main {
   flex: 1;
   padding: 10px;
-  margin-left: 0; /* past automatisch aan via sidebar show */
   display: flex;
   flex-direction: column;
   background: var(--bg);
 }
 
-#noteTitle {
-  font-size: 1.5em;
+#noteTitle, #noteContent {
   margin-bottom: 10px;
   padding: 5px;
   background: var(--bg-light);
@@ -120,12 +119,7 @@ body {
 
 #noteContent {
   flex: 1;
-  padding: 5px;
   resize: none;
-  margin-bottom: 10px;
-  background: var(--bg-light);
-  color: var(--text);
-  border: 1px solid var(--border);
 }
 
 #deleteNoteBtn {
