@@ -19,43 +19,39 @@ body {
   height: 100vh;
 }
 
-/* Navigation drawer */
-.nav {
+/* Hamburger button */
+#hamburgerBtn {
   position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 200px;
-  background: var(--bg-light);
-  border-right: 1px solid var(--border);
-  padding-top: 60px;
-  display: flex;
-  flex-direction: column;
-  z-index: 999;
-}
-
-.nav a {
-  padding: 10px;
-  color: var(--text);
-  text-decoration: none;
-}
-
-.nav a:hover {
+  top: 10px;
+  left: 10px;
+  z-index: 3000;
   background: var(--event);
+  color: var(--text);
+  font-size: 20px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.hidden {
-  display: none;
-}
-
-
-/* Sidebar */
+/* Sidebar met transitie */
 .sidebar {
   width: 250px;
   border-right: 1px solid var(--border);
   padding: 10px;
   box-sizing: border-box;
   background: var(--bg-light);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  transform: translateX(-100%);   /* standaard buiten beeld */
+  transition: transform 0.3s ease; /* vloeiende transitie */
+  z-index: 2000;
+}
+
+.sidebar.show {
+  transform: translateX(0);       /* schuift naar binnen */
 }
 
 .sidebar h1 {
@@ -73,7 +69,7 @@ body {
 }
 
 .sidebar button:hover {
-  background: #1e40af; /* donkerder blauw voor hover */
+  background: #1e40af;
 }
 
 .sidebar ul {
@@ -107,6 +103,7 @@ body {
 .main {
   flex: 1;
   padding: 10px;
+  margin-left: 0; /* past automatisch aan via sidebar show */
   display: flex;
   flex-direction: column;
   background: var(--bg);
@@ -135,7 +132,7 @@ body {
   width: 100px;
   align-self: flex-start;
   cursor: pointer;
-  background: #b91c1c; /* roodachtig voor delete */
+  background: #b91c1c;
   color: white;
   border: none;
   padding: 5px;
@@ -144,40 +141,3 @@ body {
 #deleteNoteBtn:hover {
   background: #991b1b;
 }
-
-#hamburgerBtn {
-  position: fixed;
-  top: 10px;
-  left: 130px; /* sidebar (250px) + marge */
-  z-index: 2000;
-  background: var(--event);
-  color: var(--text);
-  font-size: 20px;
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-}
-
-/* Sidebar standaard verborgen buiten beeld */
-.sidebar {
-  width: 250px;
-  border-right: 1px solid var(--border);
-  padding: 10px;
-  box-sizing: border-box;
-  background: var(--bg-light);
-
-  /* TRANSITIE TOEGEVOEGD */
-  position: fixed;          /* fixeer de sidebar */
-  top: 0;
-  left: 0;
-  height: 100vh;
-  transform: translateX(-100%);  /* buiten beeld */
-  transition: transform 0.3s ease; /* <— vloeiende transitie */
-  z-index: 999;
-}
-
-/* Sidebar zichtbaar */
-.sidebar.show {
-  transform: translateX(0); /* schuift naar binnen */
-}
-
