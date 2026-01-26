@@ -121,8 +121,27 @@ input:focus {
 #navMenu {
   transition: transform 0.3s ease;
   transform: translateX(-100%);
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 200px;
+  background: #1e293b;
+  color: white;
+  padding: 1rem;
+  z-index: 4000;
+}
+
+#navMenu a {
+  display: block;
+  padding: 0.5rem 0;
+  color: white;
+  text-decoration: none;
 }
 
 #navMenu.show {
   transform: translateX(0);
+}
+
+#navMenu a:hover {
+  background: rgba(255,255,255,0.1);
 }
