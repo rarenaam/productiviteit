@@ -131,8 +131,6 @@ function render() {
       time = new Date(time.getTime() + 45 * 60 * 1000);
     }
   }
-
-  addNowIndicator();
 }
 
 // Vorige / volgende week
@@ -145,54 +143,6 @@ document.getElementById("next").onclick = () => {
   currentDate.setDate(currentDate.getDate() + 7);
   render();
 };
-
-function addNowIndicatorWithPauses() {
-  document.querySelectorAll(".now-indicator").forEach(e => e.remove());
-
-  const now = new Date();
-  const weekStart = startOfWeek(currentDate);
-
-  const agendaStart = parseTime(weekStart, "08:15");
-  const agendaEnd = parseTime(weekStart, "18:00");
-
-  if (now < agendaStart || now > agendaEnd) return;
-
-  const tbody = document.getElementById("agendaBody");
-  const rows = tbody.querySelectorAll("tr");
-  if (rows.length === 0) return;
-
-  // Bereken totale hoogte van alle tijdblokken
-  let totalHeight = 0;
-  rows.forEach(row => totalHeight += row.offsetHeight);
-
-  // Bereken actieve minuten sinds start (pauzes overslaan)
-  let activeMinutes = 0;
-  let t = new Date(agendaStart);
-  while (t < now) {
-    if (!isInPause(t, weekStart)) activeMinutes++;
-    t = new Date(t.getTime() + 60 * 1000);
-  }
-
-  // Totale actieve minuten in de dag (excl. pauzes)
-  let totalActiveMinutes = 0;
-  let tmp = new Date(agendaStart);
-  while (tmp < agendaEnd) {
-    if (!isInPause(tmp, weekStart)) totalActiveMinutes++;
-    tmp = new Date(tmp.getTime() + 60 * 1000);
-  }
-
-  const top = (activeMinutes / totalActiveMinutes) * totalHeight;
-
-  const indicator = document.createElement("div");
-  indicator.className = "now-indicator";
-  indicator.style.top = `${top}px`;
-
-  const agendaWrapper = document.querySelector(".agenda-wrapper");
-  agendaWrapper.appendChild(indicator);
-}
-
-// Roep aan na render
-render();
 
 // Hamburger menu logic
 const hamburgerBtn = document.getElementById("hamburgerBtn");
