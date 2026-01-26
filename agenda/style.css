@@ -99,11 +99,12 @@ input:focus {
   position: relative;
 }
 
+/* Hamburger knop */
 #hamburgerBtn {
   position: fixed;
   top: 10px;
-  left: 10px; /* altijd zichtbaar */
-  z-index: 5000; /* hoger dan alles */
+  left: 10px;
+  z-index: 5000;
   background: var(--event);
   color: var(--text);
   font-size: 24px;
@@ -113,30 +114,46 @@ input:focus {
   border-radius: 4px;
 }
 
+/* Sidebar / Hamburger menu */
 #navMenu {
-  transition: transform 0.3s ease;
-  transform: translateX(-100%);
   position: fixed;
-  top: 50px;
+  top: 0;
   left: 0;
-  width: 200px;
-  background: #1e293b;
+  height: 100vh;       /* volledige hoogte */
+  width: 200px;        /* breedte sidebar */
+  background: var(--bg-light);
   color: white;
-  padding: 1rem;
+  padding-top: 60px;   /* ruimte voor hamburger knop */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+  transform: translateX(-100%); /* begin buiten beeld */
+  transition: transform 0.3s ease; /* transitie bij toggle */
   z-index: 4000;
 }
 
-#navMenu a {
-  display: block;
-  padding: 0.5rem 0;
-  color: white;
-  text-decoration: none;
+#navMenu.show {
+  transform: translateX(0); /* schuift in beeld */
 }
 
-#navMenu.show {
-  transform: translateX(0);
+#navMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#navMenu li {
+  margin-bottom: 10px;
+}
+
+#navMenu a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  padding: 10px 5px;
+  border-radius: 4px;
 }
 
 #navMenu a:hover {
-  background: rgba(255,255,255,0.1);
+  background: var(--event);
 }
