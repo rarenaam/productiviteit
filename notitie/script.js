@@ -80,6 +80,3 @@ const navMenu = document.getElementById("navMenu");
 hamburgerBtn.addEventListener("click", () => {
   navMenu.classList.toggle("show");
 });
-
-});
-
