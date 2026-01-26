@@ -8,22 +8,17 @@
 <body>
 
   <!-- Hamburger button -->
-  <button id="hamburgerBtn" class="hamburger">☰</button>
-
-  <!-- Navigatie menu -->
-  <nav id="navMenu" class="nav hidden">
-    <a href="../index.html">Home</a>
-    <a href="../agenda/">Calendar</a>
-    <a href="index.html">Notes</a>
-    <a href="../spreadsheet/">spreadsheet</a>
-  </nav>
+  <button id="hamburgerBtn">☰</button>
 
   <div class="container">
+    <!-- Sidebar -->
     <div class="sidebar">
       <h1>Notes</h1>
       <button id="addNoteBtn">New Note</button>
       <ul id="notesList"></ul>
     </div>
+
+    <!-- Main content -->
     <div class="main">
       <input id="noteTitle" placeholder="Title" />
       <textarea id="noteContent" placeholder="Start writing your note..."></textarea>
@@ -33,4 +28,4 @@
 
   <script src="script.js"></script>
 </body>
-</html
+</html>
