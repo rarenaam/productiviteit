@@ -10,7 +10,7 @@ const noteContent = document.getElementById("noteContent");
 const addNoteBtn = document.getElementById("addNoteBtn");
 const deleteNoteBtn = document.getElementById("deleteNoteBtn");
 
-// Render notes
+// Render notes in the sidebar
 function renderNotes() {
   notesList.innerHTML = "";
   notes.forEach(note => {
@@ -25,11 +25,13 @@ function renderNotes() {
   renderSelectedNote();
 }
 
+// Select a note
 function selectNote(id) {
   selectedNoteId = id;
   renderNotes();
 }
 
+// Show selected note in main area
 function renderSelectedNote() {
   const note = notes.find(n => n.id === selectedNoteId);
   if (note) {
@@ -47,7 +49,7 @@ function renderSelectedNote() {
   }
 }
 
-// Event listeners
+// Event listeners for editing notes
 noteTitle.addEventListener("input", () => {
   const note = notes.find(n => n.id === selectedNoteId);
   if (note) note.title = noteTitle.value;
@@ -59,6 +61,7 @@ noteContent.addEventListener("input", () => {
   if (note) note.content = noteContent.value;
 });
 
+// Add new note
 addNoteBtn.addEventListener("click", () => {
   const newNote = { id: Date.now(), title: "New Note", content: "" };
   notes.unshift(newNote);
@@ -66,5 +69,20 @@ addNoteBtn.addEventListener("click", () => {
   renderNotes();
 });
 
+// Delete selected note
 deleteNoteBtn.addEventListener("click", () => {
-  notes = notes.filter(n => n.id !== selectedNote
+  notes = notes.filter(n => n.id !== selectedNoteId);
+  selectedNoteId = notes[0] ? notes[0].id : null;
+  renderNotes();
+});
+
+// Initial render
+renderNotes();
+
+// Hamburger menu toggle
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const sidebar = document.querySelector(".sidebar");
+
+hamburgerBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("show");
+});
