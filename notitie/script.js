@@ -10,6 +10,7 @@ const noteContent = document.getElementById("noteContent");
 const addNoteBtn = document.getElementById("addNoteBtn");
 const deleteNoteBtn = document.getElementById("deleteNoteBtn");
 
+// Render notes
 function renderNotes() {
   notesList.innerHTML = "";
   notes.forEach(note => {
@@ -46,6 +47,7 @@ function renderSelectedNote() {
   }
 }
 
+// Event listeners
 noteTitle.addEventListener("input", () => {
   const note = notes.find(n => n.id === selectedNoteId);
   if (note) note.title = noteTitle.value;
@@ -65,18 +67,4 @@ addNoteBtn.addEventListener("click", () => {
 });
 
 deleteNoteBtn.addEventListener("click", () => {
-  notes = notes.filter(n => n.id !== selectedNoteId);
-  selectedNoteId = notes[0] ? notes[0].id : null;
-  renderNotes();
-});
-
-// initial render
-renderNotes();
-
-// Hamburger menu logic
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const navMenu = document.getElementById("navMenu");
-
-hamburgerBtn.addEventListener("click", () => {
-  navMenu.classList.toggle("show");
-});
+  notes = notes.filter(n => n.id !== selectedNote
