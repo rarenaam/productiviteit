@@ -23,6 +23,7 @@ body {
 /* Hamburger button */
 #hamburgerBtn {
   position: fixed;
+  left: 130px;
   top: 10px;
   left: 10px;
   z-index: 3000;
