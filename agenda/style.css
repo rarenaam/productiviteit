@@ -121,8 +121,6 @@ input:focus {
   width: 200px;        /* breedte sidebar */
   background: var(--bg-light);
   padding-top: 60px;   /* ruimte voor hamburger knop */
-  padding-left: 0rem;
-  padding-right: 0rem;
   border-right: 1px solid var(--border);
   
   transform: translateX(-100%); /* begin buiten beeld */
@@ -148,7 +146,7 @@ input:focus {
 
 #navMenu a {
   text-decoration: none;
-  color: white;
+  color: var(--text);
   display: block;
   padding: 10px 0px;
   border-radius: 0px;
