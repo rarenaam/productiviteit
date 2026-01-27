@@ -36,7 +36,7 @@ body {
 }
 
 /* Navigatie menu (achter hamburger) */
-.nav {
+#navMenu {
   position: fixed;
   top: 0;
   left: 0;
@@ -53,21 +53,8 @@ body {
   flex-direction: column;
 }
 
-.nav a {
-  text-decoration: none;
-  color: var(--text);
-  display: block;
-  padding: 10px 10px;
-  border-radius: 0px;
-}
-
-.nav a:hover {
-  background: var(--event);
-}
-
-/* Als menu zichtbaar is */
-.nav.show {
-  transform: translateX(0);
+#navMenu.show {
+  transform: translateX(0); /* schuift in beeld */
 }
 
 #navMenu ul {
@@ -78,6 +65,18 @@ body {
 
 #navMenu li {
   margin-bottom: 10px;
+}
+
+#navMenu a {
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  padding: 10px 16px;
+  border-radius: 0px;
+}
+
+#navMenu a:hover {
+  background: var(--event);
 }
 
 /* Sidebar (altijd zichtbaar) */
