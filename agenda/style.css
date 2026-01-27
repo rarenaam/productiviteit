@@ -148,7 +148,7 @@ input:focus {
   text-decoration: none;
   color: var(--text);
   display: block;
-  padding: 10px 0px;
+  padding: 10px 10px;
   border-radius: 0px;
 }
 
