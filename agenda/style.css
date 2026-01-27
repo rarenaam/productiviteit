@@ -120,14 +120,16 @@ input:focus {
   height: 100vh;       /* volledige hoogte */
   width: 200px;        /* breedte sidebar */
   background: var(--bg-light);
-  color: white;
   padding-top: 60px;   /* ruimte voor hamburger knop */
-  padding-left: 1rem;
-  padding-right: 1rem;
-  box-sizing: border-box;
+  padding-left: 0rem;
+  padding-right: 0rem;
+  border-right: 1px solid var(--border);
+  
   transform: translateX(-100%); /* begin buiten beeld */
   transition: transform 0.3s ease; /* transitie bij toggle */
   z-index: 4000;
+  display: flex;
+  flex-direction: column;
 }
 
 #navMenu.show {
