@@ -33,19 +33,29 @@ const authErrorElement = document.getElementById('authError'); // Element voor f
 
 // Functie om de UI aan te passen op basis van de authenticatiestatus
 function updateUI(user) {
+    console.log("updateUI called. User object:", user); // Log het hele user object
     if (user) {
         // Gebruiker is aangemeld
-        authContainer.style.display = 'none'; // Verberg het aanmeldformulier
-        appContent.style.display = 'block';   // Toon de app content
-        userNameSpan.textContent = user.email || user.displayName || 'Gebruiker'; // Toon de naam/email
+        authContainer.style.display = 'none';
+        appContent.style.display = 'block';
+
+        // Log de waarden die gebruikt worden voor de naam
+        console.log("User email:", user.email);
+        console.log("User display name:", user.displayName);
+
+        userNameSpan.textContent = user.email || user.displayName || 'Gebruiker';
+        console.log("userNameSpan after assignment (should be the name):", userNameSpan.textContent); // Wat staat hier?
+
         console.log("Gebruiker is aangemeld:", user.email);
     } else {
         // Gebruiker is NIET aangemeld
-        authContainer.style.display = 'block'; // Toon het aanmeldformulier
-        appContent.style.display = 'none';   // Verberg de app content
+        authContainer.style.display = 'block';
+        appContent.style.display = 'none';
+        userNameSpan.textContent = ''; // Zorg ervoor dat de naam leeg is bij afmelding
         console.log("Geen gebruiker aangemeld.");
     }
 }
+
 
 // Listener voor authenticatiestatusveranderingen
 onAuthStateChanged(auth, (user) => {
