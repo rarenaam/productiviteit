@@ -15,14 +15,25 @@
 
     <div class="rechthoek"></div>
 
+    <div id="auth-container">
+        <h2>Aanmelden</h2>
+        <form id="loginForm">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" required><br><br>
+            <label for="password">Wachtwoord:</label>
+            <input type="password" id="password" required><br><br>
+            <button type="submit">Aanmelden</button>
+            <p id="authError" style="color: red;"></p>
+        </form>
+    </div>
+
     <!-- Firebase Initialisatie Code -->
     <script type="module">
       // Importeer de functies die je nodig hebt van de SDK's
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; // Pas de versie aan indien nodig
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"; // Pas de versie aan indien nodig
-      // Voeg de imports toe voor Authentication en Firestore
-      import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"; // Nieuwe import!
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; // Nieuwe import!
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+      import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"; // signInWithEmailAndPassword toegevoegd!
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
       // Jouw web-app's Firebase configuratie
       const firebaseConfig = {
@@ -43,17 +54,69 @@
       const auth = getAuth(app);     // Dit is je Authentication object
       const db = getFirestore(app); // Dit is je Firestore object
 
-      // Optioneel: Je kunt hier wat basisfunctionaliteit testen of verder werken
       console.log("Firebase is geïnitialiseerd!");
       console.log("Auth object:", auth);
       console.log("Firestore object:", db);
 
+      // ----- Start van de nieuwe code voor aanmelden -----
+
+      // Functie om een gebruiker aan te melden met e-mail en wachtwoord
+      async function signInUser(email, password) {
+        const authErrorElement = document.getElementById('authError');
+        authErrorElement.textContent = ''; // Maak eventuele eerdere foutmeldingen leeg
+
+        try {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          // Gebruiker succesvol aangemeld
+          const user = userCredential.user;
+          console.log("Gebruiker is aangemeld:", user);
+          alert("Succesvol aangemeld!"); // Simpele melding aan de gebruiker
+          // Hier kun je de gebruiker doorverwijzen of de UI bijwerken
+        } catch (error) {
+          // Er is een fout opgetreden tijdens het aanmelden
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error("Fout bij aanmelden:", errorCode, errorMessage);
+          // Toon een specifieke foutmelding aan de gebruiker
+          switch (errorCode) {
+            case 'auth/user-not-found':
+              authErrorElement.textContent = 'Geen gebruiker gevonden met dit e-mailadres.';
+              break;
+            case 'auth/wrong-password':
+              authErrorElement.textContent = 'Het ingevoerde wachtwoord is onjuist.';
+              break;
+            case 'auth/invalid-email':
+              authErrorElement.textContent = 'Het e-mailadres is ongeldig.';
+              break;
+            default:
+              authErrorElement.textContent = `Fout bij aanmelden: ${errorMessage}`;
+          }
+        }
+      }
+
+      // Luister naar het indienen van het formulier
+      document.addEventListener('DOMContentLoaded', () => {
+          const loginForm = document.getElementById('loginForm');
+          if (loginForm) {
+              loginForm.addEventListener('submit', (e) => {
+                  e.preventDefault(); // Voorkom dat de pagina opnieuw laadt bij het indienen van het formulier
+
+                  const emailInput = document.getElementById('email');
+                  const passwordInput = document.getElementById('password');
+
+                  const email = emailInput.value;
+                  const password = passwordInput.value;
+
+                  if (email && password) {
+                      signInUser(email, password);
+                  } else {
+                      document.getElementById('authError').textContent = 'Vul alstublieft zowel e-mail als wachtwoord in.';
+                  }
+              });
+          }
+      });
+      // ----- Einde van de nieuwe code voor aanmelden -----
+
     </script>
-    <!-- Als je nog andere JavaScript-bestanden hebt die Firebase-functies gebruiken, plaats ze dan HIERONDER.
-         Bijvoorbeeld: <script src="script.js"></script>
-         Zorg ervoor dat deze scripts 'type="module"' gebruiken als ze imports bevatten,
-         of dat je de 'auth' en 'db' objecten globaal beschikbaar maakt (minder aanbevolen voor modules).
-         Een betere aanpak is om je hoofdscript ook als een module te maken en daar de imports te doen.
-    -->
 </body>
 </html>
