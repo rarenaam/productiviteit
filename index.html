@@ -14,5 +14,46 @@
     <a href="/productiviteit/spreadsheet/" class="button" id="buttonSpreadsheet">spreadsheet</a>
 
     <div class="rechthoek"></div>
+
+    <!-- Firebase Initialisatie Code -->
+    <script type="module">
+      // Importeer de functies die je nodig hebt van de SDK's
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; // Pas de versie aan indien nodig
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"; // Pas de versie aan indien nodig
+      // Voeg de imports toe voor Authentication en Firestore
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"; // Nieuwe import!
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; // Nieuwe import!
+
+      // Jouw web-app's Firebase configuratie
+      const firebaseConfig = {
+        apiKey: "AIzaSyDxCYAfIidmglAcgAbfgSPOtZ2HRHDHo7Q",
+        authDomain: "productivitiet2.firebaseapp.com",
+        projectId: "productivitiet2",
+        storageBucket: "productivitiet2.firebasestorage.app",
+        messagingSenderId: "492077829856",
+        appId: "1:492077829856:web:7ca946d2d325ecfc724a85",
+        measurementId: "G-EFCMG6X53K"
+      };
+
+      // Initialiseer Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app); // Initialiseer Analytics als je dat wilt gebruiken
+
+      // Initialiseer Authentication en Firestore services
+      const auth = getAuth(app);     // Dit is je Authentication object
+      const db = getFirestore(app); // Dit is je Firestore object
+
+      // Optioneel: Je kunt hier wat basisfunctionaliteit testen of verder werken
+      console.log("Firebase is geïnitialiseerd!");
+      console.log("Auth object:", auth);
+      console.log("Firestore object:", db);
+
+    </script>
+    <!-- Als je nog andere JavaScript-bestanden hebt die Firebase-functies gebruiken, plaats ze dan HIERONDER.
+         Bijvoorbeeld: <script src="script.js"></script>
+         Zorg ervoor dat deze scripts 'type="module"' gebruiken als ze imports bevatten,
+         of dat je de 'auth' en 'db' objecten globaal beschikbaar maakt (minder aanbevolen voor modules).
+         Een betere aanpak is om je hoofdscript ook als een module te maken en daar de imports te doen.
+    -->
 </body>
 </html>
