@@ -4,9 +4,13 @@
     --border: #334155;
     --text: #e5e7eb;
     --event: #2563eb;
-    --error-color: #dc2626; /* Toegevoegd voor foutmeldingen */
-    --input-border: #475569; /* Voor input velden */
-    --button-hover-bg: #1d4ed8; /* Voor knop hover */
+    --error-color: #dc2626;
+    --input-border: #475569;
+    --button-hover-bg: #1d4ed8;
+    --auth-panel-width: 350px; /* Vaste breedte voor het auth-venster */
+    --auth-panel-height: 300px; /* Vaste hoogte voor het auth-venster */
+    --top-bar-height: 8%; /* Hoogte van de vaste bovenbalk */
+    --padding-sides: 2%; /* Padding aan de zijkanten van de main content */
 }
 
 body {
@@ -16,14 +20,7 @@ body {
     padding: 0;
 }
 
-h1 {
-    color: var(--text);
-    font-size: clamp(20px, 1vw + 3.5vh, 64px);
-    top: 8%; /* Dit kan conflicteren met auth-container/app-content, wellicht aanpassen */
-    position: fixed;
-    left: 2%;
-    z-index: 1; /* Zorgt ervoor dat de titel boven de rechthoek ligt */
-}
+/* De h1-styling is nu verwijderd */
 
 p, li {
     color: var(--text);
@@ -37,7 +34,7 @@ li {
 /* rechthoek bovenaan */
 .rechthoek {
     width: 100%;
-    height: 8%;
+    height: var(--top-bar-height);
     top: 0;
     left: 0;
     background-color: var(--bg-light);
@@ -60,8 +57,8 @@ li {
     border: 1px solid var(--event);
     height: 6%;
     position: fixed;
-    z-index: 2;
-    text-decoration: none; /* Zorg dat links geen onderstreping hebben */
+    z-index: 3; /* Hogere z-index zodat ze boven auth-container kunnen liggen */
+    text-decoration: none;
 }
 
 .button:hover {
@@ -71,44 +68,136 @@ li {
 
 #buttonHome {
     top: 1%;
-    left: 2%;
-    width: clamp(80px, 9% + 50px, 200px); /* Gebruik clamp voor betere responsiviteit */
+    left: calc(var(--auth-panel-width) + 2%); /* Plaats knoppen rechts van het auth-venster */
+    width: clamp(80px, 9% + 50px, 200px);
 }
 
 #buttonAgenda {
     top: 1%;
-    left: calc(2% + clamp(80px, 9% + 50px, 200px) + 20px); /* Afstand tussen knoppen */
+    left: calc(var(--auth-panel-width) + 2% + clamp(80px, 9% + 50px, 200px) + 20px);
     width: clamp(100px, 11% + 50px, 250px);
 }
 
 #buttonNotitie {
     top: 1%;
-    left: calc(2% + clamp(80px, 9% + 50px, 200px) + 20px + clamp(100px, 11% + 50px, 250px) + 20px);
+    left: calc(var(--auth-panel-width) + 2% + clamp(80px, 9% + 50px, 200px) + 20px + clamp(100px, 11% + 50px, 250px) + 20px);
     width: clamp(80px, 9% + 50px, 200px);
 }
 
 #buttonSpreadsheet {
     top: 1%;
-    left: calc(2% + clamp(80px, 9% + 50px, 200px) + 20px + clamp(100px, 11% + 50px, 250px) + 20px + clamp(80px, 9% + 50px, 200px) + 20px);
+    left: calc(var(--auth-panel-width) + 2% + clamp(80px, 9% + 50px, 200px) + 20px + clamp(100px, 11% + 50px, 250px) + 20px + clamp(80px, 9% + 50px, 200px) + 20px);
     width: clamp(120px, 15% + 50px, 300px);
 }
 
-/* --- Authenticatie en App Content Styling --- */
-#auth-container, #app-content {
-    background-color: var(--bg-light); /* Lichte achtergrondkleur van je thema */
-    border: 1px solid var(--border); /* Randkleur van je thema */
-    border-radius: .5rem; /* Afgeronde hoeken */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06); /* Subtiele schaduw */
-    padding: 2rem; /* Ruimere padding */
-    margin: 12% auto 0 auto; /* Gecentreerd onder de header, met top margin */
-    max-width: 500px; /* Maximale breedte voor de containers */
-    color: var(--text); /* Tekstkleur */
-    z-index: 0; /* Zorg dat het onder de vaste header ligt */
-    position: relative; /* Voor correcte positionering van margin: auto */
+/* --- Authenticatie Paneel (linksboven) --- */
+#auth-container {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border);
+    border-radius: .5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+    padding: 1rem 1.5rem; /* Iets minder padding om het compacter te maken */
+    width: calc(var(--auth-panel-width) - 3rem); /* Breedte minus horizontale padding */
+    height: calc(var(--auth-panel-height) - 2rem); /* Hoogte minus verticale padding */
+    color: var(--text);
+    position: fixed; /* Vast op het scherm */
+    top: calc(var(--top-bar-height) + 1%); /* Onder de bovenste balk, met een beetje marge */
+    left: 2%; /* Links op het scherm */
+    z-index: 2; /* Boven de rechthoek, onder de knoppen indien nodig */
+    display: none; /* Standaard verborgen, JavaScript beheert dit */
+    box-sizing: border-box; /* Zorgt ervoor dat padding en border binnen de opgegeven breedte/hoogte vallen */
 }
 
-#auth-container h2, #app-content h2 {
-    color: var(--text); /* Heading kleur */
+#auth-container h2 {
+    color: var(--text);
+    font-size: 1.25rem; /* Iets kleinere titel */
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#auth-container form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 3rem); /* Neem de resterende hoogte van de container in beslag */
+}
+
+#auth-container form label {
+    font-size: .875rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: .5rem;
+    align-self: flex-start; /* Label links uitlijnen */
+}
+
+#auth-container form input[type="email"],
+#auth-container form input[type="password"] {
+    width: 100%; /* Volle breedte binnen het formulier */
+    padding: .5rem; /* Iets minder padding */
+    font-size: 1rem;
+    border: 1px solid var(--input-border);
+    background-color: var(--bg);
+    color: var(--text);
+    border-radius: .375rem;
+    box-sizing: border-box;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-bottom: 1rem;
+}
+
+#auth-container form input[type="email"]:focus,
+#auth-container form input[type="password"]:focus {
+    outline: 0;
+    border-color: var(--event);
+    box-shadow: 0 0 0 2px rgba(var(--event), 0.5);
+}
+
+#auth-container form button[type="submit"] {
+    padding: .5rem 1rem; /* Iets kleinere knop */
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    background-color: var(--event);
+    border: none;
+    border-radius: .375rem;
+    cursor: pointer;
+    transition: background-color .15s ease-in-out;
+    margin-top: 1rem;
+    width: 100%; /* Knop ook volle breedte */
+}
+
+#auth-container form button[type="submit"]:hover {
+    background-color: var(--button-hover-bg);
+}
+
+#authError {
+    color: var(--error-color);
+    font-size: .875rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+/* --- Main Content Area (wordt onder het auth-venster en de bovenbalk geplaatst) --- */
+#mainContent {
+    margin-top: calc(var(--top-bar-height) + var(--auth-panel-height) + 2%); /* Ruimte vrijhouden voor topbalk en auth-venster */
+    margin-left: calc(var(--auth-panel-width) + 2%); /* Ruimte vrijhouden voor het auth-venster aan de linkerkant */
+    margin-right: 2%; /* Ruimte aan de rechterkant */
+    padding: 0; /* Geen padding hier, de app-content heeft zijn eigen padding */
+}
+
+#app-content {
+    background-color: var(--bg-light);
+    border: 1px solid var(--border);
+    border-radius: .5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+    padding: 2rem;
+    color: var(--text);
+    /* #app-content wordt al beheerd door JS met display: block/none, dus geen standaard display hier */
+}
+
+#app-content h2 {
+    color: var(--text);
     font-size: 1.5rem;
     margin-top: 0;
     margin-bottom: 1rem;
@@ -118,80 +207,55 @@ li {
     margin-bottom: 1.5rem;
 }
 
-/* Formulieren en inputvelden */
-form label {
-    display: block;
-    font-size: .875rem; /* Kleinere labeltekst */
-    font-weight: 500;
-    color: var(--text); /* Tekstkleur van je thema */
-    margin-bottom: .5rem;
-}
-
-form input[type="email"],
-form input[type="password"] {
-    width: calc(100% - 1.5rem); /* Volle breedte minus padding */
-    padding: .75rem;
-    font-size: 1rem;
-    border: 1px solid var(--input-border); /* Randkleur voor inputs */
-    background-color: var(--bg); /* Achtergrondkleur voor inputs */
-    color: var(--text); /* Tekstkleur voor inputs */
-    border-radius: .375rem;
-    box-sizing: border-box; /* Zorgt dat padding binnen de breedte valt */
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    margin-bottom: 1rem;
-}
-
-form input[type="email"]:focus,
-form input[type="password"]:focus {
-    outline: 0;
-    border-color: var(--event); /* Focus randkleur */
-    box-shadow: 0 0 0 2px rgba(var(--event), 0.5); /* Focus schaduw */
-}
-
-form button[type="submit"],
 #signOutButton {
     display: inline-block;
     padding: .75rem 1.25rem;
     font-size: 1rem;
     font-weight: 500;
-    color: var(--text); /* Tekstkleur van knop */
-    background-color: var(--event); /* Achtergrondkleur van knop */
+    color: var(--text);
+    background-color: var(--event);
     border: none;
     border-radius: .375rem;
     cursor: pointer;
     transition: background-color .15s ease-in-out;
-    margin-top: 1rem; /* Ruimte boven de knop */
-}
-
-form button[type="submit"]:hover,
-#signOutButton:hover {
-    background-color: var(--button-hover-bg); /* Hover kleur van knop */
-}
-
-#authError {
-    color: var(--error-color); /* Foutmelding kleur */
-    font-size: .875rem;
     margin-top: 1rem;
-    text-align: center;
 }
+
+#signOutButton:hover {
+    background-color: var(--button-hover-bg);
+}
+
 
 /* Media queries voor kleinere schermen, indien gewenst */
-@media (max-width: 768px) {
-    #auth-container, #app-content {
-        margin-left: 1rem;
-        margin-right: 1rem;
-        padding: 1.5rem;
+@media (max-width: 1024px) { /* Pas aan voor je gewenste breekpunt */
+    #auth-container {
+        position: relative; /* Maak het aanmeldpaneel weer relatief */
+        top: auto;
+        left: auto;
+        width: auto;
+        height: auto;
+        max-width: 400px; /* Maximale breedte voor het auth-paneel */
+        margin: calc(var(--top-bar-height) + 20px) auto 20px auto; /* Centreer onder de bovenbalk */
+    }
+
+    #mainContent {
+        margin-top: 20px; /* Standaard marge onder auth-paneel */
+        margin-left: 2%;
+        margin-right: 2%;
     }
 
     /* Knoppen positionering op kleinere schermen, als ze overlappen */
-    #buttonHome, #buttonAgenda, #buttonNotitie, #buttonSpreadsheet {
+    .button {
         position: relative; /* Maak ze niet fixed meer op kleine schermen */
         top: auto;
         left: auto;
-        width: 100%;
+        width: calc(100% - 20px); /* Volle breedte met wat marge */
         margin-bottom: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
     }
-    /* Dit zou wel betekenen dat de knoppen onder elkaar komen, afhankelijk van hoe de rest van je layout zich gedraagt */
-    /* De h1 zou dan ook niet fixed moeten zijn en een margin-top krijgen */
+    #buttonHome, #buttonAgenda, #buttonNotitie, #buttonSpreadsheet {
+        left: auto; /* reset de left property */
+        width: calc(100% - 20px); /* Volle breedte met wat marge */
+    }
 }
-
