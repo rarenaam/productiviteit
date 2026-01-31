@@ -6,7 +6,7 @@
   <title>Notes App</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- IMPORT MAP VOOR FIREBASE MODULES -->
+  <!-- HIER IS DE BELANGRIJKE IMPORT MAP -->
   <!-- Dit vertelt de browser waar het de Firebase modules kan vinden vanaf een CDN. -->
   <script type="importmap">
     {
@@ -15,9 +15,7 @@
         "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
         "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
         "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"
-        // Voeg hier andere Firebase modules toe die je eventueel in script.js gaat gebruiken,
-        // bijv. "firebase/storage", met hun corresponderende CDN URL.
-        // Zorg ervoor dat de versie (hier 10.12.2) consistent is!
+        // Zorg ervoor dat er geen komma staat na de laatste entry in de lijst als dit de laatste is
       }
     }
   </script>
@@ -38,16 +36,16 @@
   <div class="container">
     <!-- Notes sidebar (altijd zichtbaar) -->
     <div class="sidebar">
-      <h1>Notities</h1> <!-- Aangepast naar Nederlands -->
-      <button id="addNoteBtn" disabled>Nieuwe Notitie</button> <!-- Start disabled, en Nederlands -->
+      <h1>Notities</h1>
+      <button id="addNoteBtn" disabled>Nieuwe Notitie</button>
       <ul id="notesList"></ul>
     </div>
 
     <!-- Main content -->
     <div class="main">
-      <input id="noteTitle" placeholder="Titel" disabled /> <!-- Start disabled, en Nederlands -->
-      <textarea id="noteContent" placeholder="Begin met het schrijven van je notitie..." disabled></textarea> <!-- Start disabled, en Nederlands -->
-      <button id="deleteNoteBtn" disabled>Verwijder Notitie</button> <!-- Start disabled, en Nederlands -->
+      <input id="noteTitle" placeholder="Titel" disabled />
+      <textarea id="noteContent" placeholder="Begin met het schrijven van je notitie..." disabled></textarea>
+      <button id="deleteNoteBtn" disabled>Verwijder Notitie</button>
     </div>
   </div>
 
@@ -58,7 +56,6 @@
     import { getAnalytics } from "firebase/analytics";
 
     // JOUW Firebase project configuratie object
-    // Deze waarden zijn gecontroleerd en ingevuld op basis van eerdere informatie.
     const firebaseConfig = {
       apiKey: "AIzaSyDxCYAfIidmglAcgAbfgSPOtZ2HRHDHo7Q",
       authDomain: "productivitiet2.firebaseapp.com",
