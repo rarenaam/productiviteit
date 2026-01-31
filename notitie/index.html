@@ -1,7 +1,39 @@
 <!DOCTYPE html>
-<html lang="nl"> <head> <meta charset="UTF-8"> <title>Notes App</title> <link rel="stylesheet" href="style.css"> </head> <body>
-<!-- Hamburger button -->
-<button id="hamburgerBtn"> ☰ </button>
-<!-- Navigatie menu (achtergrondmenu dat in/uit schuift) -->
-<nav id="navMenu" class="nav"> <a href="../index.html">Home</a> <a href="../agenda/">Calendar</a> <a href="index.html">Notes</a> <a href="../spreadsheet/">Spreadsheet</a> </nav>
-<div class="container"> <!-- Notes sidebar (altijd zichtbaar) --> <div class="sidebar"> <h1>Notes</h1> <button id="addNoteBtn">New Note</button> <ul id="notesList"></ul> </div>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Notes App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Hamburger button -->
+  <button id="hamburgerBtn">☰</button>
+
+  <!-- Navigatie menu (achtergrondmenu dat in/uit schuift) -->
+  <nav id="navMenu" class="nav">
+    <a href="../index.html">Home</a>
+    <a href="../agenda/">Calendar</a>
+    <a href="index.html">Notes</a>
+    <a href="../spreadsheet/">Spreadsheet</a>
+  </nav>
+
+  <div class="container">
+    <!-- Notes sidebar (altijd zichtbaar) -->
+    <div class="sidebar">
+      <h1>Notes</h1>
+      <button id="addNoteBtn">New Note</button>
+      <ul id="notesList"></ul>
+    </div>
+
+    <!-- Main content -->
+    <div class="main">
+      <input id="noteTitle" placeholder="Title" />
+      <textarea id="noteContent" placeholder="Start writing your note..."></textarea>
+      <button id="deleteNoteBtn">Delete Note</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
