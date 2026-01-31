@@ -8,7 +8,7 @@
     --input-border: #475569;
     --button-hover-bg: #1d4ed8;
     --auth-form-width: 380px; /* Breedte voor het inlogFORMULIER */
-    --top-bar-height: 8%; /* Hoogte van de vaste bovenbalk */
+    --top-bar-height: 80px; /* Vaste hoogte voor de topbalk, in px voor consistentie */
 }
 
 html, body {
@@ -33,19 +33,23 @@ li {
     text-shadow: 2px 2px 4px black;
 }
 
-/* Rechthoek bovenaan (topbalk) */
+/* Rechthoek bovenaan (topbalk), nu onderdeel van #app-content */
 .rechthoek {
     width: 100%;
     height: var(--top-bar-height);
     top: 0;
     left: 0;
     background-color: var(--bg-light);
-    position: fixed;
-    z-index: 10; /* Hogere z-index dan knoppen, maar lager dan auth-overlay */
+    position: fixed; /* Blijft vast bovenaan de pagina */
+    z-index: 10; /* Hogere z-index dan de main-app-area */
     border-bottom: 1px solid var(--border);
+    display: flex; /* Gebruik flexbox voor uitlijning van items in de balk */
+    align-items: center; /* Centreer items verticaal */
+    padding: 0 10px; /* Ruimte aan de zijkanten van de balk */
+    box-sizing: border-box;
 }
 
-/* Knoppen */
+/* Navigatieknoppen */
 .button {
     display: flex;
     align-items: center;
@@ -53,48 +57,20 @@ li {
     background-color: var(--event);
     color: var(--text);
     border-radius: 5px;
-    font-size: clamp(16px, 1vw + 1vh, 48px);
+    font-size: 16px; /* Vaste font-size voor knoppen in topbalk */
     text-align: center;
     transition: background-color 0.3s ease, color 0.3s ease;
     border: 1px solid var(--event);
-    height: 6%;
-    position: fixed;
-    z-index: 12; /* Boven de rechthoek */
+    height: 40px; /* Vaste hoogte voor knoppen */
+    padding: 0 15px;
     text-decoration: none;
+    margin-right: 10px; /* Ruimte tussen knoppen */
 }
 
 .button:hover {
     background-color: var(--text);
     color: var(--event);
 }
-
-/* Knoppen zijn nu relatief gepositioneerd ten opzichte van de linkerkant van de app-content,
-   of je kunt ze binnen de topbalk plaatsen als je dat wilt.
-   Deze positioning werkt als onderdeel van de app-content, dus ze zijn verborgen als de auth-container actief is. */
-#buttonHome {
-    top: 1%;
-    left: 2%; /* Eenvoudiger positionering voor demo */
-    width: clamp(80px, 9% + 50px, 200px);
-}
-
-#buttonAgenda {
-    top: 1%;
-    left: calc(2% + clamp(80px, 9% + 50px, 200px) + 20px);
-    width: clamp(100px, 11% + 50px, 250px);
-}
-
-#buttonNotitie {
-    top: 1%;
-    left: calc(2% + clamp(80px, 9% + 50px, 200px) + 20px + clamp(100px, 11% + 50px, 250px) + 20px);
-    width: clamp(80px, 9% + 50px, 200px);
-}
-
-#buttonSpreadsheet {
-    top: 1%;
-    left: calc(2% + clamp(80px, 9% + 50px, 200px) + 20px + clamp(100px, 11% + 50px, 250px) + 20px + clamp(80px, 9% + 50px, 200px) + 20px);
-    width: clamp(120px, 15% + 50px, 300px);
-}
-
 
 /* --- Authenticatie Container (VOLLEDIG SCHERM OVERLAY) --- */
 #auth-container {
@@ -104,13 +80,12 @@ li {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 100; /* Zorgt ervoor dat het BOVEN ALLES ligt */
+    z-index: 100; /* Zorgt ervoor dat het BOVEN ALLES ligt (hoger dan app-content) */
     display: flex; /* Gebruik flexbox om de inhoud (het inlogformulier) te centreren */
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    /* Standaard verborgen, JavaScript beheert dit */
-    display: none;
+    display: none; /* Standaard verborgen, JavaScript beheert dit */
 }
 
 /* Styling voor het inlogFORMULIER zelf (binnen #auth-container) */
@@ -192,41 +167,25 @@ li {
     text-align: center;
 }
 
-/* --- Main Content Area (wordt onder de bovenbalk geplaatst, maar bedekt door auth-container als niet ingelogd) --- */
-#mainContent {
-    /* De top-bar-height is nu puur voor layout, mainContent zelf wordt 100% hoogte en scrollbaar */
-    height: calc(100% - var(--top-bar-height)); /* Gehele ruimte onder de topbalk */
-    margin-top: var(--top-bar-height); /* Begint onder de topbalk */
-    overflow-y: auto; /* Maak mainContent scrollbaar indien nodig */
-    padding: 2% 2%; /* Algemene padding voor de content binnen mainContent */
-    box-sizing: border-box;
-}
-
+/* --- Hoofdcontent van de applicatie (#app-content) --- */
+/* Deze container wordt door JS getoggled tussen display: block en display: none */
 #app-content {
-    background-color: var(--bg-light);
-    border: 1px solid var(--border);
-    border-radius: .5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
-    padding: 2rem;
-    color: var(--text);
-    /* #app-content wordt al beheerd door JS met display: block/none, dus geen standaard display hier */
+    display: none; /* Standaard verborgen */
+    height: 100%; /* Neemt de volledige viewport hoogte in */
+    overflow: hidden; /* Voorkom dat #app-content zelf scrollt */
 }
 
-#app-content h2 {
-    color: var(--text);
-    font-size: 1.5rem;
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-
-#app-content p {
-    margin-bottom: 1.5rem;
+/* Gebruikersnaam en afmeldknop styling in de topbalk */
+#userName {
+    margin-left: auto; /* Duwt de username en afmeldknop naar rechts */
+    margin-right: 20px; /* Ruimte tussen username en afmeldknop */
+    font-size: 1rem;
+    font-weight: bold;
 }
 
 #signOutButton {
-    display: inline-block;
-    padding: .75rem 1.25rem;
-    font-size: 1rem;
+    padding: .5rem 1rem;
+    font-size: .9rem;
     font-weight: 500;
     color: var(--text);
     background-color: var(--event);
@@ -234,29 +193,42 @@ li {
     border-radius: .375rem;
     cursor: pointer;
     transition: background-color .15s ease-in-out;
-    margin-top: 1rem;
 }
 
 #signOutButton:hover {
     background-color: var(--button-hover-bg);
 }
 
-/* --- Laadscherm (optioneel) --- */
+/* Dit is het gedeelte van de app-content dat onder de vaste topbalk komt te staan */
+#main-app-area {
+    margin-top: var(--top-bar-height); /* Creëert ruimte onder de vaste topbalk */
+    padding: 20px; /* Algemene padding voor de content */
+    box-sizing: border-box;
+    height: calc(100% - var(--top-bar-height)); /* Vult de resterende hoogte */
+    overflow-y: auto; /* Maakt dit specifieke gebied scrollbaar indien nodig */
+    background-color: var(--bg-light); /* Achtergrondkleur voor de main-app-area */
+    border-radius: .5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+    margin: var(--top-bar-height) 20px 20px 20px; /* Marge rondom de contentbox */
+    color: var(--text);
+}
+
+
+/* --- Laadscherm --- */
 #loading-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--bg); /* Of een semi-transparante overlay */
+    background-color: var(--bg); /* Achtergrondkleur */
     z-index: 101; /* Hoger dan auth-container, zodat het overal overheen ligt */
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--text);
     font-size: 2rem;
-    /* Standaard verborgen; JavaScript beheert dit */
-    display: none;
+    display: none; /* Standaard verborgen; JavaScript beheert dit */
 }
 
 /* Voorbeeld laad-spinner (optioneel) */
@@ -285,27 +257,32 @@ li {
         padding: 1.5rem 1rem; /* Minder padding */
     }
 
-    /* Knoppen onder elkaar op kleinere schermen */
-    .button {
-        position: relative;
-        width: calc(100% - 4%); /* Volle breedte met padding */
-        height: auto; /* Hoogte aanpassen aan content */
-        font-size: 1rem;
-        padding: 10px 0;
-        margin-bottom: 10px;
-        left: 0 !important; /* Overrul vorige left specificaties */
-        top: auto !important; /* Overrul vorige top specificaties */
-    }
-
-    /* De "rechthoek" (topbalk) moet mogelijk ook in hoogte flexibeler zijn */
+    /* Knoppen in de topbalk op kleinere schermen */
     .rechthoek {
-        height: auto;
-        min-height: var(--top-bar-height);
-        padding-bottom: 10px; /* Ruimte onder de knoppen als ze erin komen */
+        flex-wrap: wrap; /* Laat items naar de volgende regel springen */
+        height: auto; /* Hoogte past zich aan de inhoud aan */
+        padding: 10px;
+    }
+    .button {
+        margin-bottom: 5px; /* Ruimte tussen knoppen wanneer ze wrappen */
+    }
+    #userName, #signOutButton {
+        position: relative; /* Niet meer absoluut gepositioneerd */
+        right: auto;
+        top: auto;
+        transform: none;
+        margin-left: 0;
+        margin-right: 10px; /* Ruimte tussen username en afmeldknop */
+        flex-basis: 100%; /* Nemen de volledige breedte in indien nodig */
+        text-align: center;
+    }
+    #userName {
+        order: -1; /* Zorg dat username bovenaan staat */
+        margin-bottom: 10px;
     }
 
-    #mainContent {
-        margin-top: calc(var(--top-bar-height) + 20px); /* Meer ruimte onder een mogelijk grotere topbalk */
-        padding: 1%;
+    #main-app-area {
+        margin: calc(var(--top-bar-height) + 10px) 10px 10px 10px; /* Minder marge rondom */
+        padding: 15px;
     }
 }
