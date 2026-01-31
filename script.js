@@ -1,7 +1,7 @@
 // Importeer de functies die je nodig hebt van de SDK's
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+// import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"; // Uitgecommentarieerd, indien niet gebruikt
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Jouw web-app's Firebase configuratie
@@ -30,29 +30,36 @@ const userNameSpan = document.getElementById('userName');
 const signOutButton = document.getElementById('signOutButton');
 const loginForm = document.getElementById('loginForm');
 const authErrorElement = document.getElementById('authError'); // Element voor foutmeldingen
+const loadingScreen = document.getElementById('loading-screen'); // Voor de laadtoestand
 
 // Functie om de UI aan te passen op basis van de authenticatiestatus
 function updateUI(user) {
     console.log("updateUI called. User object:", user); // Log het hele user object
+
     if (user) {
         // Gebruiker is aangemeld
-        authContainer.style.display = 'none';
-        appContent.style.display = 'block';
+        authContainer.style.display = 'none'; // Verberg de authenticatiecontainer
+        appContent.style.display = 'block'; // Toon de applicatie-inhoud
 
         // Log de waarden die gebruikt worden voor de naam
         console.log("User email:", user.email);
         console.log("User display name:", user.displayName);
 
-        userNameSpan.textContent = user.email || user.displayName || 'Gebruiker';
-        console.log("userNameSpan after assignment (should be the name):", userNameSpan.textContent); // Wat staat hier?
+        // Toon de weergavenaam of het e-mailadres van de gebruiker, anders 'Gebruiker'
+        userNameSpan.textContent = user.displayName || user.email || 'Gebruiker';
+        console.log("userNameSpan na toewijzing:", userNameSpan.textContent);
 
         console.log("Gebruiker is aangemeld:", user.email);
     } else {
         // Gebruiker is NIET aangemeld
-        authContainer.style.display = 'block';
-        appContent.style.display = 'none';
-        userNameSpan.textContent = ''; // Zorg ervoor dat de naam leeg is bij afmelding
+        authContainer.style.display = 'flex'; // Gebruik flexbox om de inhoud te centreren en full screen te maken via CSS
+        appContent.style.display = 'none'; // Verberg de applicatie-inhoud
+        userNameSpan.textContent = ''; // Wis de gebruikersnaam bij afmelden
         console.log("Geen gebruiker aangemeld.");
+    }
+    // Verberg het laadscherm zodra de authenticatiestatus bekend is en de UI is bijgewerkt
+    if (loadingScreen) {
+        loadingScreen.style.display = 'none';
     }
 }
 
@@ -69,6 +76,10 @@ async function signInUser(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     // UI wordt automatisch bijgewerkt door onAuthStateChanged
+    // Optioneel: wis de invoervelden na succesvol inloggen
+    if (loginForm) {
+      loginForm.reset();
+    }
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -76,13 +87,20 @@ async function signInUser(email, password) {
     // Toon een specifieke foutmelding aan de gebruiker
     switch (errorCode) {
       case 'auth/user-not-found':
-        authErrorElement.textContent = 'Geen gebruiker gevonden met dit e-mailadres.';
+      case 'auth/invalid-credential': // Nieuwer Firebase error code voor ongeldige referenties (wachtwoord of e-mail)
+        authErrorElement.textContent = 'Ongeldige e-mail of wachtwoord.';
         break;
-      case 'auth/wrong-password':
+      case 'auth/wrong-password': // Oudere code, kan nog voorkomen
         authErrorElement.textContent = 'Het ingevoerde wachtwoord is onjuist.';
         break;
       case 'auth/invalid-email':
         authErrorElement.textContent = 'Het e-mailadres is ongeldig.';
+        break;
+      case 'auth/too-many-requests':
+        authErrorElement.textContent = 'Te veel mislukte inlogpogingen. Probeer het later opnieuw.';
+        break;
+      case 'auth/network-request-failed':
+        authErrorElement.textContent = 'Netwerkfout. Controleer uw internetverbinding.';
         break;
       default:
         authErrorElement.textContent = `Fout bij aanmelden: ${errorMessage}`;
@@ -95,7 +113,7 @@ async function signOutUser() {
     try {
         await signOut(auth);
         // UI wordt automatisch bijgewerkt door onAuthStateChanged
-        alert("Je bent succesvol afgemeld.");
+        console.log("Gebruiker succesvol afgemeld.");
     } catch (error) {
         console.error("Fout bij afmelden:", error);
         alert("Fout bij afmelden: " + error.message);
@@ -124,5 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (signOutButton) {
         signOutButton.addEventListener('click', signOutUser);
+    }
+
+    // Toon initieel het laadscherm totdat onAuthStateChanged is afgehandeld
+    if (loadingScreen) {
+        loadingScreen.style.display = 'flex'; // Zorg ervoor dat het laadscherm zichtbaar is bij het laden
     }
 });
