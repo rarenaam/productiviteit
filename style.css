@@ -7,7 +7,7 @@
     --error-color: #dc2626;
     --input-border: #475569;
     --button-hover-bg: #1d4ed8;
-    --auth-form-width: 380px; /* Breedte voor het inlogFORMULIER */
+    --auth-form-width: 380px; /* Breedte voor het inlog/registratie FORMULIER */
     --top-bar-height: 80px; /* Vaste hoogte voor de topbalk, in px voor consistentie */
 }
 
@@ -88,9 +88,10 @@ li {
     display: none; /* Standaard verborgen, JavaScript beheert dit */
 }
 
-/* Styling voor het inlogFORMULIER zelf (binnen #auth-container) */
-#auth-container form {
-    background-color: var(--bg-light); /* Achtergrond van het inlogvenster zelf */
+/* Styling voor het inlog/registratie FORMULIER zelf (binnen #auth-container) */
+#auth-container #login-section,
+#auth-container #register-section {
+    background-color: var(--bg-light); /* Achtergrond van het venster zelf */
     border: 1px solid var(--border);
     border-radius: .5rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
@@ -122,7 +123,8 @@ li {
 }
 
 #auth-container form input[type="email"],
-#auth-container form input[type="password"] {
+#auth-container form input[type="password"],
+#auth-container form input[type="text"] { /* Toevoegen van text input voor weergavenaam */
     width: 100%;
     padding: .75rem;
     font-size: 1rem;
@@ -136,7 +138,8 @@ li {
 }
 
 #auth-container form input[type="email"]:focus,
-#auth-container form input[type="password"]:focus {
+#auth-container form input[type="password"]:focus,
+#auth-container form input[type="text"]:focus {
     outline: 0;
     border-color: var(--event);
     box-shadow: 0 0 0 2px rgba(var(--event), 0.5);
@@ -160,11 +163,27 @@ li {
     background-color: var(--button-hover-bg);
 }
 
-#authError {
+.auth-error-message { /* Algemene styling voor foutmeldingen */
     color: var(--error-color);
     font-size: .875rem;
     margin-top: 1rem;
     text-align: center;
+}
+
+.auth-toggle { /* Styling voor de login/registratie toggle link */
+    margin-top: 1.5rem;
+    font-size: .9rem;
+    color: var(--text);
+}
+
+.auth-toggle a {
+    color: var(--event);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-toggle a:hover {
+    text-decoration: underline;
 }
 
 /* --- Hoofdcontent van de applicatie (#app-content) --- */
@@ -181,6 +200,7 @@ li {
     margin-right: 20px; /* Ruimte tussen username en afmeldknop */
     font-size: 1rem;
     font-weight: bold;
+    white-space: nowrap; /* Voorkomt dat de naam afbreekt */
 }
 
 #signOutButton {
@@ -209,7 +229,7 @@ li {
     background-color: var(--bg-light); /* Achtergrondkleur voor de main-app-area */
     border-radius: .5rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
-    margin: var(--top-bar-height) 20px 20px 20px; /* Marge rondom de contentbox */
+    margin: 20px; /* Marge rondom de contentbox, let op: var(--top-bar-height) is al afgehandeld door margin-top */
     color: var(--text);
 }
 
@@ -252,7 +272,8 @@ li {
 /* Media queries voor kleinere schermen */
 @media (max-width: 768px) {
     /* De full-screen #auth-container hoeft niet veel te veranderen, alleen het formulier erin */
-    #auth-container form {
+    #auth-container #login-section,
+    #auth-container #register-section {
         width: 95%; /* Iets smaller op zeer kleine schermen */
         padding: 1.5rem 1rem; /* Minder padding */
     }
