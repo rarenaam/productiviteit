@@ -2,8 +2,25 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notes App</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- IMPORT MAP VOOR FIREBASE MODULES -->
+  <!-- Dit vertelt de browser waar het de Firebase modules kan vinden vanaf een CDN. -->
+  <script type="importmap">
+    {
+      "imports": {
+        "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+        "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
+        "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"
+        // Voeg hier andere Firebase modules toe die je eventueel in script.js gaat gebruiken,
+        // bijv. "firebase/storage", met hun corresponderende CDN URL.
+        // Zorg ervoor dat de versie (hier 10.12.2) consistent is!
+      }
+    }
+  </script>
 </head>
 <body>
 
@@ -21,19 +38,45 @@
   <div class="container">
     <!-- Notes sidebar (altijd zichtbaar) -->
     <div class="sidebar">
-      <h1>Notes</h1>
-      <button id="addNoteBtn">New Note</button>
+      <h1>Notities</h1> <!-- Aangepast naar Nederlands -->
+      <button id="addNoteBtn" disabled>Nieuwe Notitie</button> <!-- Start disabled, en Nederlands -->
       <ul id="notesList"></ul>
     </div>
 
     <!-- Main content -->
     <div class="main">
-      <input id="noteTitle" placeholder="Title" />
-      <textarea id="noteContent" placeholder="Start writing your note..."></textarea>
-      <button id="deleteNoteBtn">Delete Note</button>
+      <input id="noteTitle" placeholder="Titel" disabled /> <!-- Start disabled, en Nederlands -->
+      <textarea id="noteContent" placeholder="Begin met het schrijven van je notitie..." disabled></textarea> <!-- Start disabled, en Nederlands -->
+      <button id="deleteNoteBtn" disabled>Verwijder Notitie</button> <!-- Start disabled, en Nederlands -->
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Firebase SDK Initialisatie (met jouw project configuratie) -->
+  <!-- Dit script moet geladen worden vóór script.js. -->
+  <script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+
+    // JOUW Firebase project configuratie object
+    // Deze waarden zijn gecontroleerd en ingevuld op basis van eerdere informatie.
+    const firebaseConfig = {
+      apiKey: "AIzaSyDxCYAfIidmglAcgAbfgSPOtZ2HRHDHo7Q",
+      authDomain: "productivitiet2.firebaseapp.com",
+      projectId: "productivitiet2",
+      storageBucket: "productivitiet2.firebasestorage.app",
+      messagingSenderId: "492077829856",
+      appId: "1:492077829856:web:7ca946d2d325ecfc724a85",
+      measurementId: "G-EFCMG6X53K"
+    };
+
+    // Initialiseer de Firebase app
+    const app = initializeApp(firebaseConfig);
+    // Initialiseer Google Analytics
+    const analytics = getAnalytics(app);
+  </script>
+
+  <!-- Jouw notitie-applicatie script -->
+  <script type="module" src="script.js"></script>
+
 </body>
 </html>
