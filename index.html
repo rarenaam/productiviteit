@@ -6,9 +6,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- De h1 "Wat wil je doen?" is verwijderd -->
+    <!-- Laadscherm - zichtbaar bij het laden, verdwijnt zodra auth status bekend is -->
+    <!-- Dit voorkomt een "flits" van content voordat Firebase de inlogstatus heeft gecontroleerd. -->
+    <div id="loading-screen">
+        <p>Laden...</p>
+    </div>
 
-    <!-- Container voor het aanmeldformulier (wordt linksboven geplaatst door CSS) -->
+    <!-- Container voor het aanmeldformulier (wordt full-screen overlay door CSS) -->
+    <!-- Dit is de overlay die het hele scherm bedekt wanneer de gebruiker niet is aangemeld. -->
     <div id="auth-container">
         <h2>Aanmelden</h2>
         <form id="loginForm">
@@ -21,22 +26,27 @@
         </form>
     </div>
 
-    <!-- Dit omvat de vaste bovenbalk, navigatieknoppen en de app-specifieke inhoud -->
-    <div id="mainContent">
-        <!-- Dit is de rechthoek bovenaan, die door CSS fixed wordt gemaakt -->
-        <div class="rechthoek"></div>
+    <!-- Hoofdcontent van de applicatie - ALLEEN zichtbaar als gebruiker is aangemeld -->
+    <!-- Deze div bevat ALLES wat de gebruiker ziet na het inloggen. -->
+    <div id="app-content">
+        <!-- Dit is de rechthoek bovenaan (topbalk) -->
+        <div class="rechthoek">
+            <!-- Navigatieknoppen -->
+            <a href="index.html" class="button" id="buttonHome">home</a>
+            <a href="/productiviteit/agenda/" class="button" id="buttonAgenda">agenda</a>
+            <a href="/productiviteit/notitie/" class="button" id="buttonNotitie">notitie</a>
+            <a href="/productiviteit/spreadsheet/" class="button" id="buttonSpreadsheet">spreadsheet</a>
+            
+            <!-- Gebruikersnaam en afmeldknop, nu in de topbalk -->
+            <span id="userName" style="position: absolute; right: 120px; top: 50%; transform: translateY(-50%); color: var(--text);"></span>
+            <button id="signOutButton" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">Afmelden</button>
+        </div>
 
-        <!-- Navigatieknoppen -->
-        <a href="index.html" class="button" id="buttonHome">home</a>
-        <a href="/productiviteit/agenda/" class="button" id="buttonAgenda">agenda</a>
-        <a href="/productiviteit/notitie/" class="button" id="buttonNotitie">notitie</a>
-        <a href="/productiviteit/spreadsheet/" class="button" id="buttonSpreadsheet">spreadsheet</a>
-
-        <!-- Container voor content die alleen voor aangemelde gebruikers is -->
-        <div id="app-content">
-            <h2>Welkom, <span id="userName"></span>!</h2>
+        <!-- Dit is de daadwerkelijke content onder de topbalk en knoppen -->
+        <!-- Deze div wordt scrollbaar als de inhoud groter is dan het scherm. -->
+        <div id="main-app-area">
+            <h2>Welkom, <span id="userName-content"></span>!</h2>
             <p>Dit is je persoonlijke content. Je bent aangemeld.</p>
-            <button id="signOutButton">Afmelden</button>
             <!-- Hier komt de rest van je app-specifieke content, zoals agenda, notitie, etc. -->
         </div>
     </div>
