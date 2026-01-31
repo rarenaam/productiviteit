@@ -1,24 +1,171 @@
-:root { --bg: #0f172a; --bg-light: #1e293b; --border: #334155; --text: #e5e7eb; --event: #2563eb; }
-body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
-/* Container met flex voor sidebar + main */ .container { display: flex; height: 100vh; }
-/* Hamburger button */ #hamburgerBtn { position: fixed; left: 130px; top: 10px; z-index: 5000; background: var(--event); color: var(--text); font-size: 20px; padding: 8px 12px; border: none; cursor: pointer; border-radius: 1px; }
-/* Navigatie menu (achter hamburger) / #navMenu { position: fixed; top: 0; left: 0; height: 100vh; / volledige hoogte / width: 200px; / breedte sidebar / background: var(--bg-light); padding-top: 60px; / ruimte voor hamburger knop */ border-right: 1px solid var(--border);
-transform: translateX(-100%); /* begin buiten beeld / transition: transform 0.3s ease; / transitie bij toggle */ z-index: 4000; display: flex; flex-direction: column; }
-#navMenu.show { transform: translateX(0); /* schuift in beeld */ }
-#navMenu ul { list-style: none; padding: 0; margin: 0; }
-#navMenu li { margin-bottom: 10px; }
-#navMenu a { text-decoration: none; color: var(--text); display: block; padding: 10px 16px; border-radius: 0px; }
-#navMenu a:hover { background: var(--event); }
-/* Sidebar (altijd zichtbaar) / .sidebar { width: 250px; border-right: 1px solid var(--border); padding: 10px; box-sizing: border-box; background: var(--bg-light); z-index: 2000; / onder navigatie */ }
-.sidebar h1 { margin-top: 0; }
-.sidebar button { width: 100%; margin-bottom: 10px; background: var(--event); color: var(--text); border: none; padding: 5px; cursor: pointer; }
-.sidebar button:hover { background: #1e40af; }
-.sidebar ul { list-style: none; padding: 0; margin: 0; overflow-y: auto; height: calc(100% - 90px); }
-.sidebar li { margin-bottom: 5px; }
-.sidebar li button { width: 100%; text-align: left; padding: 5px; border: none; background: transparent; color: var(--text); cursor: pointer; }
-.sidebar li button:hover { background-color: var(--event); color: var(--text); }
-/* Main content */ .main { flex: 1; padding: 10px; display: flex; flex-direction: column; background: var(--bg); }
-#noteTitle, #noteContent { margin-bottom: 10px; padding: 5px; background: var(--bg-light); color: var(--text); border: 1px solid var(--border); }
-#noteContent { flex: 1; resize: none; }
-#deleteNoteBtn { width: 100px; align-self: flex-start; cursor: pointer; background: #b91c1c; color: white; border: none; padding: 5px; }
-#deleteNoteBtn:hover { background: #991b1b; }
+:root {
+  --bg: #0f172a;
+  --bg-light: #1e293b;
+  --border: #334155;
+  --text: #e5e7eb;
+  --event: #2563eb;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Container met flex voor sidebar + main */
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Hamburger button */
+#hamburgerBtn {
+  position: fixed;
+  left: 130px;
+  top: 10px;
+  z-index: 5000;
+  background: var(--event);
+  color: var(--text);
+  font-size: 20px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 1px;
+}
+
+/* Navigatie menu (achter hamburger) */
+#navMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;       /* volledige hoogte */
+  width: 200px;        /* breedte sidebar */
+  background: var(--bg-light);
+  padding-top: 60px;   /* ruimte voor hamburger knop */
+  border-right: 1px solid var(--border);
+  
+  transform: translateX(-100%); /* begin buiten beeld */
+  transition: transform 0.3s ease; /* transitie bij toggle */
+  z-index: 4000;
+  display: flex;
+  flex-direction: column;
+}
+
+#navMenu.show {
+  transform: translateX(0); /* schuift in beeld */
+}
+
+#navMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#navMenu li {
+  margin-bottom: 10px;
+}
+
+#navMenu a {
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  padding: 10px 16px;
+  border-radius: 0px;
+}
+
+#navMenu a:hover {
+  background: var(--event);
+}
+
+/* Sidebar (altijd zichtbaar) */
+.sidebar {
+  width: 250px;
+  border-right: 1px solid var(--border);
+  padding: 10px;
+  box-sizing: border-box;
+  background: var(--bg-light);
+  z-index: 2000; /* onder navigatie */
+}
+
+.sidebar h1 {
+  margin-top: 0;
+}
+
+.sidebar button {
+  width: 100%;
+  margin-bottom: 10px;
+  background: var(--event);
+  color: var(--text);
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.sidebar button:hover {
+  background: #1e40af;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  height: calc(100% - 90px);
+}
+
+.sidebar li {
+  margin-bottom: 5px;
+}
+
+.sidebar li button {
+  width: 100%;
+  text-align: left;
+  padding: 5px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.sidebar li button:hover {
+  background-color: var(--event);
+  color: var(--text);
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+#noteTitle, #noteContent {
+  margin-bottom: 10px;
+  padding: 5px;
+  background: var(--bg-light);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+#noteContent {
+  flex: 1;
+  resize: none;
+}
+
+#deleteNoteBtn {
+  width: 100px;
+  align-self: flex-start;
+  cursor: pointer;
+  background: #b91c1c;
+  color: white;
+  border: none;
+  padding: 5px;
+}
+
+#deleteNoteBtn:hover {
+  background: #991b1b;
+}
