@@ -2,6 +2,7 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Goede praktijk voor responsiviteit -->
   <title>Notes App</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -22,18 +23,49 @@
     <!-- Notes sidebar (altijd zichtbaar) -->
     <div class="sidebar">
       <h1>Notes</h1>
-      <button id="addNoteBtn">New Note</button>
+      <button id="addNoteBtn" disabled>Nieuwe Notitie</button> <!-- Disabled bij start, wordt enabled na inloggen -->
       <ul id="notesList"></ul>
     </div>
 
     <!-- Main content -->
     <div class="main">
-      <input id="noteTitle" placeholder="Title" />
-      <textarea id="noteContent" placeholder="Start writing your note..."></textarea>
-      <button id="deleteNoteBtn">Delete Note</button>
+      <input id="noteTitle" placeholder="Titel" disabled /> <!-- Disabled bij start -->
+      <textarea id="noteContent" placeholder="Begin met het schrijven van je notitie..." disabled></textarea> <!-- Disabled bij start -->
+      <button id="deleteNoteBtn" disabled>Verwijder Notitie</button> <!-- Disabled bij start -->
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Firebase SDK Initialisatie -->
+  <!-- Dit script moet de Firebase config van JOUW project bevatten. -->
+  <!-- Het moet GELADEN WORDEN VOOR notitie.js (nu script.js genoemd). -->
+  <script type="module">
+    // Importeer de Firebase app initialisatie functie
+    import { initializeApp } from "firebase/app";
+
+    // JOUW Firebase project configuratie object
+    // VERVANG AL DEZE PLACEHOLDER WAARDEN MET DE WERKELIJKE WAARDEN UIT JE FIREBASE CONSOLE!
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID",
+      // measurementId is optioneel, als je Google Analytics gebruikt:
+      // measurementId: "YOUR_MEASUREMENT_ID"
+    };
+
+    // Initialiseer de Firebase app
+    const app = initializeApp(firebaseConfig);
+
+    // Omdat notitie.js (nu script.js) de Firebase modules zelf importeert,
+    // hoeven we `getAuth()` of `getFirestore()` hier niet globaal beschikbaar te maken.
+    // De import statements in script.js handelen dit af.
+  </script>
+
+  <!-- Jouw notitie-applicatie script -->
+  <!-- Zorg ervoor dat de naam 'script.js' overeenkomt met de naam van je JavaScript-bestand. -->
+  <script type="module" src="script.js"></script>
+
 </body>
 </html>
