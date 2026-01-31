@@ -1,75 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-    <title>Productiviteit</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes App</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- IMPORT MAP VOOR FIREBASE MODULES -->
+  <!-- Dit vertelt de browser waar het de Firebase modules kan vinden. -->
+  <script type="importmap">
+    {
+      "imports": {
+        "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+        "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
+        "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"
+        // Voeg hier andere Firebase modules toe die je gebruikt in script.js (bijv. "firebase/storage"),
+        // door de CDN URL voor die specifieke module toe te voegen.
+        // Zorg ervoor dat de versie (hier 10.12.2) consistent is met de compatibiliteit van je project.
+      }
+    }
+  </script>
 </head>
 <body>
-    <!-- Laadscherm - zichtbaar bij het laden, verdwijnt zodra auth status bekend is -->
-    <div id="loading-screen">
-        <p>Laden...</p>
+
+  <!-- Hamburger button -->
+  <button id="hamburgerBtn">☰</button>
+
+  <!-- Navigatie menu (achtergrondmenu dat in/uit schuift) -->
+  <nav id="navMenu" class="nav">
+    <a href="../index.html">Home</a>
+    <a href="../agenda/">Calendar</a>
+    <a href="index.html">Notes</a>
+    <a href="../spreadsheet/">Spreadsheet</a>
+  </nav>
+
+  <div class="container">
+    <!-- Notes sidebar (altijd zichtbaar) -->
+    <div class="sidebar">
+      <h1>Notes</h1>
+      <button id="addNoteBtn" disabled>Nieuwe Notitie</button>
+      <ul id="notesList"></ul>
     </div>
 
-    <!-- Container voor het aanmeld/registratieformulier (wordt full-screen overlay door CSS) -->
-    <div id="auth-container">
-        <!-- Login Form -->
-        <div id="login-section">
-            <h2>Aanmelden</h2>
-            <form id="loginForm">
-                <label for="email">E-mail:</label>
-                <input type="email" id="loginEmail" required><br><br>
-                <label for="password">Wachtwoord:</label>
-                <input type="password" id="loginPassword" required><br><br>
-                <button type="submit">Aanmelden</button>
-                <p id="authErrorLogin" class="auth-error-message"></p>
-            </form>
-            <p class="auth-toggle">Nog geen account? <a href="#" id="showRegister">Registreer hier</a></p>
-        </div>
-
-        <!-- Registration Form (Standaard verborgen) -->
-        <div id="register-section" style="display:none;">
-            <h2>Registreren</h2>
-            <form id="registerForm">
-                <label for="registerDisplayName">Weergavenaam (optioneel):</label>
-                <input type="text" id="registerDisplayName"><br><br>
-                <label for="registerEmail">E-mail:</label>
-                <input type="email" id="registerEmail" required><br><br>
-                <label for="registerPassword">Wachtwoord:</label>
-                <input type="password" id="registerPassword" required><br><br>
-                <label for="registerPasswordConfirm">Bevestig Wachtwoord:</label>
-                <input type="password" id="registerPasswordConfirm" required><br><br>
-                <button type="submit">Account aanmaken</button>
-                <p id="authErrorRegister" class="auth-error-message"></p>
-            </form>
-            <p class="auth-toggle">Al een account? <a href="#" id="showLogin">Meld je hier aan</a></p>
-        </div>
+    <!-- Main content -->
+    <div class="main">
+      <input id="noteTitle" placeholder="Titel" disabled />
+      <textarea id="noteContent" placeholder="Begin met het schrijven van je notitie..." disabled></textarea>
+      <button id="deleteNoteBtn" disabled>Verwijder Notitie</button>
     </div>
+  </div>
 
-    <!-- Hoofdcontent van de applicatie - ALLEEN zichtbaar als gebruiker is aangemeld -->
-    <div id="app-content">
-        <!-- Dit is de rechthoek bovenaan (topbalk) -->
-        <div class="rechthoek">
-            <!-- Navigatieknoppen -->
-            <a href="index.html" class="button" id="buttonHome">home</a>
-            <a href="/productiviteit/agenda/" class="button" id="buttonAgenda">agenda</a>
-            <a href="/productiviteit/notitie/" class="button" id="buttonNotitie">notitie</a>
-            <a href="/productiviteit/spreadsheet/" class="button" id="buttonSpreadsheet">spreadsheet</a>
-            
-            <!-- Gebruikersnaam en afmeldknop, nu in de topbalk -->
-            <span id="userName" style="position: absolute; right: 120px; top: 50%; transform: translateY(-50%); color: var(--text);"></span>
-            <button id="signOutButton" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">Afmelden</button>
-        </div>
+  <!-- Firebase SDK Initialisatie (met jouw project configuratie) -->
+  <!-- Dit script moet de Firebase config van JOUW project bevatten. -->
+  <!-- Het moet geladen worden vóór script.js. -->
+  <script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics"; // Toegevoegd voor Google Analytics
 
-        <!-- Dit is de daadwerkelijke content onder de topbalk en knoppen -->
-        <div id="main-app-area">
-            <h2>Welkom, <span id="userName-content"></span>!</h2>
-            <p>Dit is je persoonlijke content. Je bent aangemeld.</p>
-            <!-- Hier komt de rest van je app-specifieke content, zoals agenda, notitie, etc. -->
-        </div>
-    </div>
+    // JOUW Firebase project configuratie object (volledig ingevuld)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDxCYAfIidmglAcgAbfgSPOtZ2HRHDHo7Q",
+      authDomain: "productivitiet2.firebaseapp.com",
+      projectId: "productivitiet2",
+      storageBucket: "productivitiet2.firebasestorage.app",
+      messagingSenderId: "492077829856",
+      appId: "1:492077829856:web:7ca946d2d325ecfc724a85",
+      measurementId: "G-EFCMG6X53K"
+    };
 
-    <!-- Link naar je JavaScript-bestand met alle logica -->
-    <script type="module" src="app.js"></script>
+    // Initialiseer de Firebase app
+    const app = initializeApp(firebaseConfig);
+    // Initialiseer Google Analytics (indien gebruikt)
+    const analytics = getAnalytics(app);
+  </script>
+
+  <!-- Jouw notitie-applicatie script -->
+  <script type="module" src="script.js"></script>
+
 </body>
 </html>
