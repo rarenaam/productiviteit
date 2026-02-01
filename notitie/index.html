@@ -6,6 +6,10 @@
   <title>Notes App</title>
   <link rel="stylesheet" href="style.css">
 
+  <!-- TOEGEVOEGD: Content Security Policy meta tag om 'unsafe-eval' toe te staan -->
+  <!-- Dit is nodig vanwege de melding in de console, maar verlaagt de beveiliging. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com; img-src 'self' data:;">
+  
   <!-- HIER IS DE BELANGRIJKE IMPORT MAP -->
   <!-- Dit vertelt de browser waar het de Firebase modules kan vinden vanaf een CDN. -->
   <script type="importmap">
