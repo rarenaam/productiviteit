@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-    <title>Productiviteit</title>
+    <title>ProductiviteitHub - Home</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com https://www.gstatic.com; img-src 'self' data:;">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -15,11 +16,11 @@
         <div id="login-section">
             <h2>Aanmelden</h2>
             <form id="loginForm">
-                <label for="loginEmail">E-mail:</label>
-                <input type="email" id="loginEmail" required><br><br>
+                <label for="loginEmail">E-mail</label>
+                <input type="email" id="loginEmail" placeholder="je@email.com" required>
                 
-                <label for="loginPassword">Wachtwoord:</label>
-                <input type="password" id="loginPassword" required><br><br>
+                <label for="loginPassword">Wachtwoord</label>
+                <input type="password" id="loginPassword" placeholder="••••••••" required>
                 
                 <button type="submit">Aanmelden</button>
                 <p id="authErrorLogin" class="auth-error-message"></p>
@@ -30,40 +31,69 @@
         <div id="register-section" style="display:none;">
             <h2>Registreren</h2>
             <form id="registerForm">
-                <label for="registerDisplayName">Weergavenaam (optioneel):</label>
-                <input type="text" id="registerDisplayName"><br><br>
+                <label for="registerDisplayName">Weergavenaam</label>
+                <input type="text" id="registerDisplayName" placeholder="Bijv. Jan">
                 
-                <label for="registerEmail">E-mail:</label>
-                <input type="email" id="registerEmail" required><br><br>
+                <label for="registerEmail">E-mail</label>
+                <input type="email" id="registerEmail" required>
                 
-                <label for="registerPassword">Wachtwoord:</label>
-                <input type="password" id="registerPassword" required><br><br>
+                <label for="registerPassword">Wachtwoord</label>
+                <input type="password" id="registerPassword" required>
                 
-                <label for="registerPasswordConfirm">Bevestig Wachtwoord:</label>
-                <input type="password" id="registerPasswordConfirm" required><br><br>
+                <label for="registerPasswordConfirm">Bevestig Wachtwoord</label>
+                <input type="password" id="registerPasswordConfirm" required>
                 
                 <button type="submit">Account aanmaken</button>
                 <p id="authErrorRegister" class="auth-error-message"></p>
             </form>
-            <p class="auth-toggle">Al een account? <a href="#" id="showLogin">Meld je hier aan</a></p>
+            <p class="auth-toggle">Al een account? <a href="#" id="showLogin">Meld je aan</a></p>
         </div>
     </div>
 
     <div id="app-content">
-        <div class="rechthoek">
-            <a href="index.html" class="button" id="buttonHome">home</a>
-            <a href="/productiviteit/agenda/" class="button" id="buttonAgenda">agenda</a>
-            <a href="/productiviteit/notitie/" class="button" id="buttonNotitie">notitie</a>
-            <a href="/productiviteit/spreadsheet/" class="button" id="buttonSpreadsheet">spreadsheet</a>
-            
-            <span id="userName"></span>
-            <button id="signOutButton">Afmelden</button>
-        </div>
+        <nav>
+            <div class="nav-container">
+                <a href="index.html" class="logo">Productiviteit<span>Hub</span></a>
+                <div class="menu">
+                    <a href="index.html" class="active">Home</a>
+                    <a href="notitie/index.html">Notities</a>
+                    <a href="agenda/index.html">Agenda</a>
+                    <a href="timer/index.html">Hulpmiddel Leren</a>
+                </div>
+                <div class="user-controls">
+                    <span id="userName"></span>
+                    <button id="signOutButton">Afmelden</button>
+                </div>
+            </div>
+        </nav>
 
-        <div id="main-app-area">
-            <h2>Welkom, <span id="userName-content"></span>!</h2>
-            <p>Dit is je persoonlijke content. Je bent aangemeld.</p>
-        </div>
+        <main id="main-app-area">
+            <header class="welcome-header">
+                <h2>Welkom terug, <span id="userName-content"></span>!</h2>
+                <p>Wat gaan we vandaag doen voor je examenvoorbereiding?</p>
+            </header>
+            
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-icon">📅</div>
+                    <h3>Agenda</h3>
+                    <p>Plan je leermomenten in en hou overzicht op je toetsweek.</p>
+                    <a href="agenda/index.html" class="btn-card">Open Agenda</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⏱️</div>
+                    <h3>Hulpmiddel Leren</h3>
+                    <p>Focus met de Pomodoro-techniek: 25 minuten diepe concentratie.</p>
+                    <a href="timer/index.html" class="btn-card">Start Timer</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📝</div>
+                    <h3>Notities</h3>
+                    <p>Sla belangrijke samenvattingen en leertips overzichtelijk op.</p>
+                    <a href="notitie/index.html" class="btn-card">Naar Notities</a>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script type="module" src="app.js"></script>
