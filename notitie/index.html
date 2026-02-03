@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Notes App</title>
-  <link rel="stylesheet" href="style.css">
-
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notities - ProductiviteitHub</title>
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
 </head>
 <body>
 
-  <button id="hamburgerBtn">☰</button>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Productiviteit<span>Hub</span></a>
+            <div class="menu">
+                <a href="../index.html">Home</a>
+                <a href="index.html" class="active">Notities</a>
+                <a href="../agenda/index.html">Agenda</a>
+                <a href="../timer/index.html">Hulpmiddel Leren</a>
+            </div>
+            <div class="user-controls">
+                <span id="userNameDisplay">Laden...</span>
+            </div>
+        </div>
+    </nav>
 
-  <nav id="navMenu" class="nav">
-    <a href="../index.html">Home</a>
-    <a href="../agenda/">Calendar</a>
-    <a href="index.html">Notes</a>
-    <a href="../spreadsheet/">Spreadsheet</a>
-  </nav>
+    <div class="container">
+        <div class="sidebar">
+            <button id="addNoteBtn" disabled>+ Nieuwe Notitie</button>
+            <ul id="notesList"></ul>
+        </div>
 
-  <div class="container">
-    <div class="sidebar">
-      <h1>Notities</h1>
-      <button id="addNoteBtn" disabled>Nieuwe Notitie</button>
-      <ul id="notesList"></ul>
+        <div class="main">
+            <input id="noteTitle" placeholder="Titel van je notitie" disabled />
+            <textarea id="noteContent" placeholder="Begin met het schrijven van je samenvatting..." disabled></textarea>
+            <div class="actions">
+                <button id="deleteNoteBtn" disabled>Verwijder Notitie</button>
+            </div>
+        </div>
     </div>
 
-    <div class="main">
-      <input id="noteTitle" placeholder="Titel" disabled />
-      <textarea id="noteContent" placeholder="Begin met het schrijven van je notitie..." disabled></textarea>
-      <button id="deleteNoteBtn" disabled>Verwijder Notitie</button>
-    </div>
-  </div>
-
-  <script type="module" src="script.js"></script>
-
+    <script type="module" src="script.js"></script>
 </body>
 </html>
