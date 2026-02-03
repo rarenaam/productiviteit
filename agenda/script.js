@@ -140,6 +140,8 @@ function render() {
                 input.value = events[key] || "";
                 input.placeholder = "...";
                 input.disabled = !currentUser;
+                input.name = "agenda-slot-" + key; // Unieke naam voor de browser
+                input.id = "slot-" + key;         // Unieke ID
 
                 // Opslaan in Firebase wanneer de focus van het veld afgaat (blur/change)
                 input.addEventListener("change", async () => {
