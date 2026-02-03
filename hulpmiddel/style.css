@@ -16,6 +16,62 @@ body {
     overflow-x: hidden;
 }
 
+
+/* Styling voor het invoer-gedeelte */
+.setup-area {
+    background: rgba(255, 255, 255, 0.03); /* Subtiele achtergrond */
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: left;
+}
+
+.input-field label {
+    font-size: 0.9rem;
+    color: #94a3b8; /* Zacht grijs voor de tekst */
+    font-weight: 500;
+    padding-left: 4px;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1.1rem;
+    background: var(--bg); /* Donkere achtergrond van je site */
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    color: white;
+    transition: all 0.3s ease;
+    outline: none;
+    box-sizing: border-box; /* Zorgt dat padding de breedte niet verpest */
+}
+
+/* Effect wanneer je in het vak klikt */
+.input-field input:focus {
+    border-color: var(--event); /* De blauwe kleur van je hub */
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.2); /* Zachte blauwe gloed */
+    background: rgba(30, 41, 59, 0.8);
+}
+
+/* Styling voor de 'pijltjes' in het getal-veld (Chrome, Safari, Edge) */
+.input-field input::-webkit-outer-spin-button,
+.input-field input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Verwijder pijltjes voor Firefox */
+.input-field input[type=number] {
+    -moz-appearance: textfield;
+}
+
 /* --- Navigatie (Uniform) --- */
 nav {
     background: var(--bg-light);
