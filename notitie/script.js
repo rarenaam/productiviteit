@@ -1,9 +1,7 @@
-// 1. Imports met volledige URL's voor GitHub Pages compatibiliteit
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 2. Firebase Initialisatie
 const firebaseConfig = {
     apiKey: "AIzaSyDxCYAfIidmglAcgAbfgSPOtZ2HRHDHo7Q",
     authDomain: "productivitiet2.firebaseapp.com",
@@ -18,48 +16,40 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// 3. Globale variabelen
 let notes = [];
 let selectedNoteId = null;
 let currentUser = null;
 let unsubscribeFromNotes = null;
 
-// 4. DOM elementen
 const notesList = document.getElementById("notesList");
 const noteTitle = document.getElementById("noteTitle");
 const noteContent = document.getElementById("noteContent");
 const addNoteBtn = document.getElementById("addNoteBtn");
 const deleteNoteBtn = document.getElementById("deleteNoteBtn");
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const navMenu = document.getElementById("navMenu");
+const userNameDisplay = document.getElementById("userNameDisplay");
 
-// 5. UI Rendering Functies
+// UI Renderen
 function renderNotes() {
     notesList.innerHTML = "";
     if (notes.length === 0) {
-        notesList.innerHTML = currentUser 
-            ? "<li class='empty-state'>Geen notities gevonden. Klik op 'Nieuwe Notitie'.</li>"
-            : "<li class='empty-state'>Log in om je notities te zien.</li>";
+        notesList.innerHTML = "<li style='color:gray; font-size:0.8rem;'>Geen notities...</li>";
     }
 
     notes.forEach(note => {
         const li = document.createElement("li");
         const btn = document.createElement("button");
         btn.textContent = note.title || "Naamloze notitie";
+        if (note.id === selectedNoteId) btn.className = "active-note-btn";
         
-        // VEILIGE EVENT LISTENER (vervangt onclick voor CSP)
-        btn.addEventListener('click', () => selectNote(note.id));
+        btn.addEventListener('click', () => {
+            selectedNoteId = note.id;
+            renderNotes();
+            renderSelectedNote();
+        });
         
-        if (note.id === selectedNoteId) btn.style.fontWeight = "bold";
         li.appendChild(btn);
         notesList.appendChild(li);
     });
-    renderSelectedNote();
-}
-
-function selectNote(id) {
-    selectedNoteId = id;
-    renderNotes();
 }
 
 function renderSelectedNote() {
@@ -79,98 +69,52 @@ function renderSelectedNote() {
     }
 }
 
-// 6. Firebase Data Operaties
+// Firebase listener
 function setupNotesListener(uid) {
     if (unsubscribeFromNotes) unsubscribeFromNotes();
-
-    const userNotesCollectionRef = collection(db, "users", uid, "notes");
-    const q = query(userNotesCollectionRef, orderBy("createdAt", "desc"));
+    const q = query(collection(db, "users", uid, "notes"), orderBy("createdAt", "desc"));
 
     unsubscribeFromNotes = onSnapshot(q, (snapshot) => {
-        notes = [];
-        snapshot.forEach((doc) => {
-            notes.push({ id: doc.id, ...doc.data() });
-        });
-
-        if (!selectedNoteId && notes.length > 0) {
-            selectedNoteId = notes[0].id;
-        } else if (notes.length === 0) {
-            selectedNoteId = null;
-        }
+        notes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (!selectedNoteId && notes.length > 0) selectedNoteId = notes[0].id;
         renderNotes();
-    }, (error) => {
-        console.error("Fout bij laden:", error);
+        renderSelectedNote();
     });
 }
 
-// 7. Auth Listener
+// Auth status
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
     if (user) {
+        userNameDisplay.textContent = user.displayName || user.email;
         setupNotesListener(user.uid);
         addNoteBtn.disabled = false;
     } else {
-        if (unsubscribeFromNotes) unsubscribeFromNotes();
-        notes = [];
-        selectedNoteId = null;
-        renderNotes();
-        addNoteBtn.disabled = true;
+        window.location.href = "../index.html"; // Terug naar home als niet ingelogd
     }
 });
 
-// 8. Event Listeners voor Knoppen
+// Acties
 addNoteBtn.addEventListener("click", async () => {
-    if (!currentUser) return;
-    try {
-        const newNoteData = {
-            title: "Nieuwe Notitie",
-            content: "",
-            createdAt: serverTimestamp()
-        };
-        const userNotesCollectionRef = collection(db, "users", currentUser.uid, "notes");
-        const docRef = await addDoc(userNotesCollectionRef, newNoteData);
-        selectedNoteId = docRef.id;
-    } catch (error) {
-        console.error("Fout bij toevoegen:", error);
-    }
+    const docRef = await addDoc(collection(db, "users", currentUser.uid, "notes"), {
+        title: "Nieuwe Notitie",
+        content: "",
+        createdAt: serverTimestamp()
+    });
+    selectedNoteId = docRef.id;
 });
 
 deleteNoteBtn.addEventListener("click", async () => {
-    if (!currentUser || !selectedNoteId) return;
-    if (confirm("Weet je zeker dat je deze notitie wilt verwijderen?")) {
-        try {
-            const noteDocRef = doc(db, "users", currentUser.uid, "notes", selectedNoteId);
-            await deleteDoc(noteDocRef);
-            selectedNoteId = null;
-        } catch (error) {
-            console.error("Fout bij verwijderen:", error);
-        }
+    if (confirm("Notitie verwijderen?")) {
+        await deleteDoc(doc(db, "users", currentUser.uid, "notes", selectedNoteId));
+        selectedNoteId = null;
     }
 });
 
 noteTitle.addEventListener("input", async () => {
-    if (!currentUser || !selectedNoteId) return;
-    try {
-        const noteDocRef = doc(db, "users", currentUser.uid, "notes", selectedNoteId);
-        await updateDoc(noteDocRef, { title: noteTitle.value });
-    } catch (error) {
-        console.error("Fout bij updaten titel:", error);
-    }
+    await updateDoc(doc(db, "users", currentUser.uid, "notes", selectedNoteId), { title: noteTitle.value });
 });
 
 noteContent.addEventListener("input", async () => {
-    if (!currentUser || !selectedNoteId) return;
-    try {
-        const noteDocRef = doc(db, "users", currentUser.uid, "notes", selectedNoteId);
-        await updateDoc(noteDocRef, { content: noteContent.value });
-    } catch (error) {
-        console.error("Fout bij updaten inhoud:", error);
-    }
+    await updateDoc(doc(db, "users", currentUser.uid, "notes", selectedNoteId), { content: noteContent.value });
 });
-
-hamburgerBtn.addEventListener("click", () => {
-    navMenu.classList.toggle("show");
-});
-
-// Start de eerste render
-renderNotes();
