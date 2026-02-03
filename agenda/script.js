@@ -25,13 +25,11 @@ let events = {};
 let currentUser = null;
 let unsubscribe = null;
 
-const PX_PER_MINUTE = 1.2;
 const PAUSES = [
-    { start: "11:15", end: "11:35" },
-    { start: "13:05", end: "13:35" },
+    { start: "11:15", end: "11:35" }, // 20 min
+    { start: "13:05", end: "13:35" }, // 30 min
 ];
 
-// Helper: Tijd parsen
 function parseTime(baseDate, timeStr) {
     const [h, m] = timeStr.split(":").map(Number);
     const d = new Date(baseDate);
@@ -39,7 +37,6 @@ function parseTime(baseDate, timeStr) {
     return d;
 }
 
-// Helper: Is het pauze?
 function isInPause(time, baseDate) {
     return PAUSES.some(p => {
         const start = parseTime(baseDate, p.start);
@@ -48,11 +45,10 @@ function isInPause(time, baseDate) {
     });
 }
 
-// Firebase Auth Status
 onAuthStateChanged(auth, (user) => {
     currentUser = user;
     if (user) {
-        userNameDisplay.textContent = user.displayName || user.email;
+        if(userNameDisplay) userNameDisplay.textContent = user.displayName || user.email;
         setupAgendaListener(user.uid);
     } else {
         window.location.href = "../index.html";
@@ -97,7 +93,7 @@ function render() {
     while (time < end) {
         const paused = isInPause(time, weekStart);
         const tr = document.createElement("tr");
-        tr.style.height = paused ? "30px" : "60px";
+        tr.style.height = paused ? "35px" : "60px";
 
         const timeCell = document.createElement("td");
         timeCell.className = "time-col";
@@ -132,7 +128,22 @@ function render() {
         });
 
         agendaBody.appendChild(tr);
-        time = new Date(time.getTime() + (paused ? 20 : 45) * 60000);
+
+        // --- DYNAMISCHE TIJDSTAP ---
+        let stepMinutes = 45; // Standaard les
+        if (paused) {
+            const currentPause = PAUSES.find(p => {
+                const s = parseTime(weekStart, p.start);
+                const e = parseTime(weekStart, p.end);
+                return time >= s && time < e;
+            });
+            if (currentPause) {
+                const s = parseTime(weekStart, currentPause.start);
+                const e = parseTime(weekStart, currentPause.end);
+                stepMinutes = (e - s) / 60000; // Rekent automatisch 20 of 30 uit
+            }
+        }
+        time = new Date(time.getTime() + stepMinutes * 60000);
     }
 }
 
