@@ -1,102 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-	<title>spreadsheet</title>
-	<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hulpmiddel Leren - Pomodoro</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
 
-	body {
-		font-family: 'Arial', sans-serif;
-		background-color: #4a4a4a;
-	}
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Specifieke stijlen voor de Timer */
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 70vh;
+            text-align: center;
+        }
 
-	h1 {
-		color: white;
-		font-size: 30px;
-		top: 8%;
-		position: fixed;
-	}
+        .timer-circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 8px solid #1e293b;
+            border-top: 8px solid #3b82f6; /* Blauwe accentkleur */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
 
-	.button {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background-color: #007FFF;
-			color: white;
-			border-radius: 5px;
-			font-size: clamp(1px, 1vw + 1vh, 48px);
-			text-align: center;
-			transition: background-color 0.3s ease, color 0.3s ease;
-			border:1px solid #007FFF;
-			height: 6%;
-			}
-	}
+        .timer-controls button {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: none;
+            transition: opacity 0.2s;
+        }
 
-	.button:hover {
-			background-color: white;
-			color: #007FFF;
-	}
-
-	.rechthoek {
-				width: 100%;
-				height: 8%;
-				top: 0%;
-				left: 0;
-				background-color: white;
-				position: fixed;
-				z-index: 1;
-	}
-
-	#buttonHome {
-				position: fixed;
-				top: 1%;
-				left: 2%;
-				margin-right: calc(4% + 50px);
-				z-index: 2;
-				width: calc(9% + 50px);
-				
-	}
-
-	#buttonAgenda {
-				position: fixed;
-				top: 1%;
-				margin-right: calc(5% + 50px);
-				z-index: 2;
-				width: calc(11% + 50px);
-				left: calc(12% + 50px);
-	}
-
-	#buttonNotitie {
-				position: fixed;
-				top: 1%;
-				margin-right: calc(3% + 50px);
-				z-index: 2;
-				width: calc(9% + 50px);
-				left: calc(24% + 100px);
-	}
-
-	#buttonSpreadsheet {
-				position: fixed;
-				top: 1%;
-				margin-right: calc(4% + 150px);
-				z-index: 2;
-				width: calc(15% + 50px);
-				left: calc(34% + 150px);
-	}
-
-	</style>
-
+        .btn-start { background-color: #3b82f6; color: white; }
+        .btn-reset { background-color: #ef4444; color: white; }
+        
+        .stats-card {
+            margin-top: 3rem;
+            background: #1e293b;
+            padding: 1.5rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
 </head>
-
 <body>
-	<h1>spreadsheet</h1>
 
-			<a href="/productiviteit/index.html" class="button" id="buttonHome">home</a>
-			<a href="/productiviteit/agenda/" class="button" id="buttonAgenda">agenda</a>
-			<a href="/productiviteit/notitie/" class="button" id="buttonNotitie">notitie</a>
-			<a href="/productiviteit/spreadsheet/" class="button" id="buttonSpreadsheet">spreadsheet</a>
-	
-	<div class="rechthoek"></div>
-</body>
-</body>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Productiviteit<span>Hub</span></a>
+            <div class="menu" id="navMenu">
+                <a href="../index.html">Home</a>
+                <a href="../notitie/index.html">Notities</a>
+                <a href="../agenda/index.html">Agenda</a>
+                <a href="index.html" class="active">Hulpmiddel Leren</a>
+            </div>
+        </div>
+    </nav>
 
+    <main class="container">
+        <div class="timer-container">
+            <h1>Pomodoro Focus</h1>
+            <p>Concentreer je op je werk. We houden je voortgang bij.</p>
+
+            <div class="timer-circle" id="timerDisplay">25:00</div>
+
+            <div class="timer-controls">
+                <button id="startBtn" class="btn-start">Start Focus</button>
+                <button id="resetBtn" class="btn-reset">Reset</button>
+            </div>
+
+            <div class="stats-card">
+                <h3>Vandaag voltooid</h3>
+                <p><span id="sessionCount">0</span> Pomodoro sessies</p>
+                <small>Elke sessie staat voor 25 minuten diepe focus.</small>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="script.js"></script>
+</body>
 </html>
