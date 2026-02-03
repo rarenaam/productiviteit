@@ -221,15 +221,19 @@ li {
 
 /* Dit is het gedeelte van de app-content dat onder de vaste topbalk komt te staan */
 #main-app-area {
-    margin-top: var(--top-bar-height); /* Creëert ruimte onder de vaste topbalk */
-    padding: 20px; /* Algemene padding voor de content */
+    /* Gebruik de variabele voor de bovenkant, en 20px voor de rest */
+    margin: var(--top-bar-height) 20px 20px 20px; 
+    
+    padding: 20px;
     box-sizing: border-box;
-    height: calc(100% - var(--top-bar-height)); /* Vult de resterende hoogte */
-    overflow-y: auto; /* Maakt dit specifieke gebied scrollbaar indien nodig */
-    background-color: var(--bg-light); /* Achtergrondkleur voor de main-app-area */
+    
+    /* Zorg dat de hoogte rekening houdt met de marges boven en onder (80px + 20px) */
+    height: calc(100% - var(--top-bar-height) - 40px); 
+    
+    overflow-y: auto;
+    background-color: var(--bg-light);
     border-radius: .5rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
-    margin: 20px; /* Marge rondom de contentbox, let op: var(--top-bar-height) is al afgehandeld door margin-top */
     color: var(--text);
 }
 
