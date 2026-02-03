@@ -1,204 +1,137 @@
-/* Specifieke stijlen voor het Hulpmiddel Leren (Timer) */
+:root {
+    --bg: #0f172a;
+    --bg-light: #1e293b;
+    --border: #334155;
+    --text: #e5e7eb;
+    --text-muted: #94a3b8;
+    --event: #2563eb;
+    --event-hover: #1d4ed8;
+}
 
-/* --- Navigatiebalk Styling --- */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+/* --- Navigatie (Uniform) --- */
 nav {
-  background: var(--bg-light);
-  border-bottom: 1px solid var(--border);
-  padding: 1rem 0;
+    background: var(--bg-light);
+    border-bottom: 1px solid var(--border);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-decoration: none;
-  color: var(--text);
-}
-
-.logo span {
-  color: var(--event); /* De blauwe kleur uit je variabelen */
-}
-
-.menu {
-  display: flex;
-  gap: 1rem;
-}
-
-/* De knoppen naar andere pagina's */
-.menu a {
-  text-decoration: none;
-  color: var(--text);
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  transition: all 0.2s;
-}
-
-.menu a:hover, .menu a.active {
-  background: var(--event);
-  border-color: var(--event);
-  color: var(--event-text);
-}
-
-/* --- Timer Specifieke Knoppen --- */
-/* Zorg dat de start/reset knoppen de stijl van je variabelen overnemen */
-.btn-start {
-  background: var(--event) !important;
-  color: var(--event-text) !important;
-  border: none !important;
-  padding: 1rem 2rem !important;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-reset {
-  background: var(--bg-light) !important;
-  color: var(--text) !important;
-  border: 1px solid var(--border) !important;
-  padding: 1rem 2rem !important;
-  cursor: pointer;
-}
-
-.timer-circle {
-    margin: 2rem auto;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    border: 5px solid var(--event);
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    background: var(--bg-light);
+    padding: 0.8rem 1.5rem;
 }
 
-.timer-container {
+.logo { font-size: 1.4rem; font-weight: bold; text-decoration: none; color: var(--text); }
+.logo span { color: var(--event); }
+.menu { display: flex; gap: 0.5rem; }
+.menu a { text-decoration: none; color: var(--text); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; transition: 0.2s; }
+.menu a.active, .menu a:hover { background: var(--event); color: white; }
+#userNameDisplay { color: var(--text-muted); font-size: 0.85rem; }
+
+/* --- Timer Content --- */
+.container {
+    margin-top: 80px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 100px);
+    align-items: center;
+    min-height: calc(100vh - 80px);
+}
+
+.timer-section {
     text-align: center;
+    max-width: 500px;
+    width: 100%;
     padding: 20px;
 }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    color: #f8fafc;
-}
-
 .subtitle {
-    color: #94a3b8;
-    margin-bottom: 3rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
 }
 
-/* De grote cirkel-timer */
 .timer-circle {
     width: 280px;
     height: 280px;
     border-radius: 50%;
-    background: #0f172a;
-    border: 10px solid #1e293b;
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2); /* Zachte blauwe gloed */
+    background: var(--bg-light);
+    border: 8px solid var(--event);
+    box-shadow: 0 0 40px rgba(37, 99, 235, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 5rem;
-    font-family: 'Courier New', Courier, monospace; /* Monospace voor stabiele cijfers */
-    font-weight: 700;
-    color: #3b82f6;
-    margin-bottom: 3rem;
-    position: relative;
-    transition: transform 0.3s ease;
+    font-size: 4.5rem;
+    font-weight: bold;
+    color: var(--text);
+    margin: 0 auto 3rem;
+    font-family: 'Courier New', monospace;
 }
 
-.timer-circle:hover {
-    transform: scale(1.02);
-}
-
-/* Knoppen */
 .timer-controls {
     display: flex;
-    gap: 20px;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 3rem;
 }
 
-.timer-btn {
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 50px; /* Ronde knoppen */
-    border: none;
+.btn-timer {
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 50px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: 0.2s;
     text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
 .btn-start {
-    background: #3b82f6;
+    background: var(--event);
     color: white;
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+    border: none;
 }
 
-.btn-start:hover {
-    background: #2563eb;
-    transform: translateY(-2px);
-}
+.btn-start:hover { background: var(--event-hover); transform: translateY(-2px); }
 
 .btn-reset {
     background: transparent;
-    color: #94a3b8;
-    border: 2px solid #1e293b;
+    color: var(--text-muted);
+    border: 2px solid var(--border);
 }
 
-.btn-reset:hover {
-    background: #1e293b;
-    color: #f8fafc;
-}
+.btn-reset:hover { background: var(--border); color: white; }
 
-/* Statistieken kaart onderaan */
+/* Stats Card */
 .stats-card {
-    margin-top: 4rem;
-    background: #1e293b;
-    border-left: 4px solid #3b82f6;
-    padding: 20px 40px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 450px;
+    background: var(--bg-light);
+    padding: 20px;
+    border-radius: 15px;
+    border-left: 5px solid var(--event);
 }
 
 .stats-card h3 {
     margin: 0;
-    font-size: 1rem;
-    color: #94a3b8;
+    font-size: 0.9rem;
+    color: var(--text-muted);
     text-transform: uppercase;
 }
 
 .stats-card p {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
     margin: 10px 0;
-    color: #f8fafc;
 }
 
-.stats-card span {
-    color: #3b82f6;
-}
-
-/* Responsive: Voor mobiele telefoons */
-@media (max-width: 480px) {
-    .timer-circle {
-        width: 220px;
-        height: 220px;
-        font-size: 3.5rem;
-    }
-}
+.stats-card span { color: var(--event); }
