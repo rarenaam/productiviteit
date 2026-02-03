@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <title>Agenda</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
-
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - ProductiviteitHub</title>
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
 </head>
-<body class="dark">
+<body>
 
-  <button id="hamburgerBtn" class="hamburger">☰</button>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Productiviteit<span>Hub</span></a>
+            <div class="menu">
+                <a href="../index.html">Home</a>
+                <a href="../notitie/index.html">Notities</a>
+                <a href="index.html" class="active">Agenda</a>
+                <a href="../timer/index.html">Hulpmiddel Leren</a>
+            </div>
+            <div class="user-controls">
+                <span id="userNameDisplay">Laden...</span>
+            </div>
+        </div>
+    </nav>
 
-  <header class="topbar">
-    <button id="prev">◀</button>
-    <h1 id="weekLabel">Agenda</h1>
-    <button id="next">▶</button>
-  </header>
+    <div class="agenda-wrapper">
+        <header class="agenda-header">
+            <button id="prev">◀ Vorige</button>
+            <h2 id="weekLabel">Maand Jaar</h2>
+            <button id="next">Volgende ▶</button>
+        </header>
 
-  <div class="agenda-wrapper">
-    <table>
-      <thead>
-        <tr id="daysRow"></tr>
-      </thead>
-      <tbody id="agendaBody"></tbody>
-    </table>
-  </div>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr id="daysRow">
+                        <th class="time-col">Tijd</th>
+                        </tr>
+                </thead>
+                <tbody id="agendaBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
 
-  <nav id="navMenu" class="nav"> 
-    <ul>
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="index.html">Agenda</a></li>
-      <li><a href="../notitie/index.html">Notities</a></li>
-      <li><a href="../spreadsheet/index.html">Spreadsheet</a></li>
-    </ul>
-  </nav>
-
-  <script type="module" src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
