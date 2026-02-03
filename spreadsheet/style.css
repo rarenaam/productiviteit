@@ -1,1 +1,124 @@
+/* Specifieke stijlen voor het Hulpmiddel Leren (Timer) */
 
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 100px);
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #f8fafc;
+}
+
+.subtitle {
+    color: #94a3b8;
+    margin-bottom: 3rem;
+}
+
+/* De grote cirkel-timer */
+.timer-circle {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: #0f172a;
+    border: 10px solid #1e293b;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2); /* Zachte blauwe gloed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    font-family: 'Courier New', Courier, monospace; /* Monospace voor stabiele cijfers */
+    font-weight: 700;
+    color: #3b82f6;
+    margin-bottom: 3rem;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.timer-circle:hover {
+    transform: scale(1.02);
+}
+
+/* Knoppen */
+.timer-controls {
+    display: flex;
+    gap: 20px;
+}
+
+.timer-btn {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px; /* Ronde knoppen */
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-start {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+.btn-start:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+.btn-reset {
+    background: transparent;
+    color: #94a3b8;
+    border: 2px solid #1e293b;
+}
+
+.btn-reset:hover {
+    background: #1e293b;
+    color: #f8fafc;
+}
+
+/* Statistieken kaart onderaan */
+.stats-card {
+    margin-top: 4rem;
+    background: #1e293b;
+    border-left: 4px solid #3b82f6;
+    padding: 20px 40px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.stats-card h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.stats-card p {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #f8fafc;
+}
+
+.stats-card span {
+    color: #3b82f6;
+}
+
+/* Responsive: Voor mobiele telefoons */
+@media (max-width: 480px) {
+    .timer-circle {
+        width: 220px;
+        height: 220px;
+        font-size: 3.5rem;
+    }
+}
