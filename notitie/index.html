@@ -6,30 +6,12 @@
   <title>Notes App</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- TOEGEVOEGD: Content Security Policy meta tag om 'unsafe-eval' toe te staan -->
-  <!-- Dit is nodig vanwege de melding in de console, maar verlaagt de beveiliging. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com; img-src 'self' data:;">
-  
-  <!-- HIER IS DE BELANGRIJKE IMPORT MAP -->
-  <!-- Dit vertelt de browser waar het de Firebase modules kan vinden vanaf een CDN. -->
-  <script type="importmap">
-    {
-      "imports": {
-        "firebase/app": "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
-        "firebase/auth": "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js",
-        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js",
-        "firebase/analytics": "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"
-        // Zorg ervoor dat er geen komma staat na de laatste entry in de lijst als dit de laatste is
-      }
-    }
-  </script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
 </head>
 <body>
 
-  <!-- Hamburger button -->
   <button id="hamburgerBtn">☰</button>
 
-  <!-- Navigatie menu (achtergrondmenu dat in/uit schuift) -->
   <nav id="navMenu" class="nav">
     <a href="../index.html">Home</a>
     <a href="../agenda/">Calendar</a>
@@ -38,14 +20,12 @@
   </nav>
 
   <div class="container">
-    <!-- Notes sidebar (altijd zichtbaar) -->
     <div class="sidebar">
       <h1>Notities</h1>
       <button id="addNoteBtn" disabled>Nieuwe Notitie</button>
       <ul id="notesList"></ul>
     </div>
 
-    <!-- Main content -->
     <div class="main">
       <input id="noteTitle" placeholder="Titel" disabled />
       <textarea id="noteContent" placeholder="Begin met het schrijven van je notitie..." disabled></textarea>
@@ -53,30 +33,6 @@
     </div>
   </div>
 
-  <!-- Firebase SDK Initialisatie (met jouw project configuratie) -->
-  <!-- Dit script moet geladen worden vóór script.js. -->
-  <script type="module">
-    import { initializeApp } from "firebase/app";
-    import { getAnalytics } from "firebase/analytics";
-
-    // JOUW Firebase project configuratie object
-    const firebaseConfig = {
-      apiKey: "AIzaSyDxCYAfIidmglAcgAbfgSPOtZ2HRHDHo7Q",
-      authDomain: "productivitiet2.firebaseapp.com",
-      projectId: "productivitiet2",
-      storageBucket: "productivitiet2.firebasestorage.app",
-      messagingSenderId: "492077829856",
-      appId: "1:492077829856:web:7ca946d2d325ecfc724a85",
-      measurementId: "G-EFCMG6X53K"
-    };
-
-    // Initialiseer de Firebase app
-    const app = initializeApp(firebaseConfig);
-    // Initialiseer Google Analytics
-    const analytics = getAnalytics(app);
-  </script>
-
-  <!-- Jouw notitie-applicatie script -->
   <script type="module" src="script.js"></script>
 
 </body>
