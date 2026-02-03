@@ -1,6 +1,5 @@
 // Importeer de functies die je nodig hebt van de SDK's
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-// import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -19,8 +18,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
-console.log("Firebase is geïnitialiseerd!");
 
 // Referenties naar de HTML-elementen
 const loadingScreen = document.getElementById('loading-screen');
@@ -42,7 +39,7 @@ const registerPasswordInput = document.getElementById('registerPassword');
 const registerPasswordConfirmInput = document.getElementById('registerPasswordConfirm');
 const authErrorRegister = document.getElementById('authErrorRegister');
 
-// UI toggle links
+// UI toggle links (tussen aanmelden en registreren)
 const showRegisterLink = document.getElementById('showRegister');
 const showLoginLink = document.getElementById('showLogin');
 
@@ -52,149 +49,84 @@ const userNameSpanTopBar = document.getElementById('userName');
 const userNameSpanMainContent = document.getElementById('userName-content');
 const signOutButton = document.getElementById('signOutButton');
 
-
 // Functie om de UI aan te passen op basis van de authenticatiestatus
 function updateUI(user) {
-    console.log("updateUI called. User object:", user);
-
     if (user) {
         // Gebruiker is aangemeld
-        authContainer.style.display = 'none'; // Verberg de authenticatiecontainer
-        appContent.style.display = 'block'; // Toon de gehele applicatie-inhoud
+        authContainer.style.display = 'none';
+        appContent.style.display = 'block';
 
         const displayUserName = user.displayName || user.email || 'Gebruiker';
-        if (userNameSpanTopBar) {
-            userNameSpanTopBar.textContent = displayUserName;
-        }
-        if (userNameSpanMainContent) {
-            userNameSpanMainContent.textContent = displayUserName;
-        }
-        console.log("Gebruikersnaam na toewijzing:", displayUserName);
-        console.log("Gebruiker is aangemeld:", user.email);
+        if (userNameSpanTopBar) userNameSpanTopBar.textContent = displayUserName;
+        if (userNameSpanMainContent) userNameSpanMainContent.textContent = displayUserName;
     } else {
         // Gebruiker is NIET aangemeld
-        authContainer.style.display = 'flex'; // Toon de authenticatiecontainer
-        appContent.style.display = 'none'; // Verberg de gehele applicatie-inhoud
+        authContainer.style.display = 'flex';
+        appContent.style.display = 'none';
         
-        // Wis de gebruikersnaam bij afmelden
-        if (userNameSpanTopBar) {
-            userNameSpanTopBar.textContent = '';
-        }
-        if (userNameSpanMainContent) {
-            userNameSpanMainContent.textContent = '';
-        }
-        console.log("Geen gebruiker aangemeld.");
+        if (userNameSpanTopBar) userNameSpanTopBar.textContent = '';
+        if (userNameSpanMainContent) userNameSpanMainContent.textContent = '';
     }
-    // Verberg het laadscherm zodra de authenticatiestatus bekend is en de UI is bijgewerkt
-    if (loadingScreen) {
-        loadingScreen.style.display = 'none';
-    }
+    
+    if (loadingScreen) loadingScreen.style.display = 'none';
 }
-
 
 // Listener voor authenticatiestatusveranderingen
 onAuthStateChanged(auth, (user) => {
-    updateUI(user); // Pas de UI aan zodra de authenticatiestatus bekend is
+    updateUI(user);
 });
 
-// Functie om een gebruiker aan te melden met e-mail en wachtwoord
+// Functie om een gebruiker aan te melden
 async function signInUser(email, password) {
-  authErrorLogin.textContent = ''; // Maak eventuele eerdere foutmeldingen leeg
-
+  authErrorLogin.textContent = '';
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    // UI wordt automatisch bijgewerkt door onAuthStateChanged
-    loginForm.reset(); // Wis de invoervelden na succesvol inloggen
+    loginForm.reset();
   } catch (error) {
     const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error("Fout bij aanmelden:", errorCode, errorMessage);
-    // Toon een specifieke foutmelding aan de gebruiker
-    switch (errorCode) {
-      case 'auth/user-not-found':
-      case 'auth/invalid-credential':
+    console.error("Fout bij aanmelden:", errorCode);
+    // Foutmeldingen voor de gebruiker
+    if (errorCode === 'auth/user-not-found' || errorCode === 'auth/invalid-credential') {
         authErrorLogin.textContent = 'Ongeldige e-mail of wachtwoord.';
-        break;
-      case 'auth/wrong-password':
-        authErrorLogin.textContent = 'Het ingevoerde wachtwoord is onjuist.';
-        break;
-      case 'auth/invalid-email':
-        authErrorLogin.textContent = 'Het e-mailadres is ongeldig.';
-        break;
-      case 'auth/too-many-requests':
-        authErrorLogin.textContent = 'Te veel mislukte inlogpogingen. Probeer het later opnieuw.';
-        break;
-      case 'auth/network-request-failed':
-        authErrorLogin.textContent = 'Netwerkfout. Controleer uw internetverbinding.';
-        break;
-      default:
-        authErrorLogin.textContent = `Fout bij aanmelden: ${errorMessage}`;
+    } else {
+        authErrorLogin.textContent = 'Er is iets misgegaan. Probeer het opnieuw.';
     }
   }
 }
 
 // Functie om een nieuwe gebruiker te registreren
 async function signUpUser(email, password, displayName = null) {
-    authErrorRegister.textContent = ''; // Maak eerdere foutmeldingen leeg
-
+    authErrorRegister.textContent = '';
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-
-        // Stel de weergavenaam in als deze is opgegeven
         if (displayName) {
             await updateProfile(user, { displayName: displayName });
-            console.log("Display name set:", displayName);
         }
-
-        // UI wordt automatisch bijgewerkt door onAuthStateChanged
-        registerForm.reset(); // Wis de invoervelden na succesvolle registratie
-        console.log("Gebruiker succesvol geregistreerd:", user.email);
+        registerForm.reset();
     } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error("Fout bij registreren:", errorCode, errorMessage);
-        switch (errorCode) {
-            case 'auth/email-already-in-use':
-                authErrorRegister.textContent = 'Dit e-mailadres is al in gebruik.';
-                break;
-            case 'auth/invalid-email':
-                authErrorRegister.textContent = 'Het e-mailadres is ongeldig.';
-                break;
-            case 'auth/weak-password':
-                authErrorRegister.textContent = 'Het wachtwoord is te zwak. Gebruik minimaal 6 tekens.';
-                break;
-            case 'auth/operation-not-allowed':
-                authErrorRegister.textContent = 'E-mail/wachtwoord registratie is niet ingeschakeld in Firebase Console.';
-                break;
-            default:
-                authErrorRegister.textContent = `Fout bij registreren: ${errorMessage}`;
-        }
+        console.error("Fout bij registreren:", error.code);
+        authErrorRegister.textContent = 'Registratie mislukt. Gebruik een geldig e-mailadres.';
     }
 }
-
 
 // Functie om af te melden
 async function signOutUser() {
     try {
         await signOut(auth);
-        // UI wordt automatisch bijgewerkt door onAuthStateChanged
-        console.log("Gebruiker succesvol afgemeld.");
     } catch (error) {
         console.error("Fout bij afmelden:", error);
-        alert("Fout bij afmelden: " + error.message);
     }
 }
 
-// Voeg event listeners toe na DOMContentLoaded
+// Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-    // Schakel tussen login en registratie formulieren
+    // Wisselen tussen Login en Registratie schermen
     if (showRegisterLink) {
         showRegisterLink.addEventListener('click', (e) => {
             e.preventDefault();
             loginSection.style.display = 'none';
-            registerSection.style.display = 'flex'; // Gebruik flex om het formulier te centreren
-            authErrorLogin.textContent = ''; // Wis eventuele fouten van login
+            registerSection.style.display = 'flex';
         });
     }
 
@@ -202,53 +134,26 @@ document.addEventListener('DOMContentLoaded', () => {
         showLoginLink.addEventListener('click', (e) => {
             e.preventDefault();
             registerSection.style.display = 'none';
-            loginSection.style.display = 'flex'; // Gebruik flex om het formulier te centreren
-            authErrorRegister.textContent = ''; // Wis eventuele fouten van registratie
+            loginSection.style.display = 'flex';
         });
     }
 
-    // Event listener voor het login formulier
+    // Submit logica
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = loginEmailInput.value;
-            const password = loginPasswordInput.value;
-
-            if (email && password) {
-                signInUser(email, password);
-            } else {
-                authErrorLogin.textContent = 'Vul alstublieft zowel e-mail als wachtwoord in.';
-            }
+            signInUser(loginEmailInput.value, loginPasswordInput.value);
         });
     }
 
-    // Event listener voor het registratie formulier
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const displayName = registerDisplayNameInput.value;
-            const email = registerEmailInput.value;
-            const password = registerPasswordInput.value;
-            const passwordConfirm = registerPasswordConfirmInput.value;
-
-            authErrorRegister.textContent = ''; // Wis eerdere foutmeldingen
-
-            if (!email || !password || !passwordConfirm) {
-                authErrorRegister.textContent = 'Vul alle verplichte velden in.';
-                return;
-            }
-
-            if (password !== passwordConfirm) {
+            if (registerPasswordInput.value !== registerPasswordConfirmInput.value) {
                 authErrorRegister.textContent = 'Wachtwoorden komen niet overeen.';
                 return;
             }
-
-            if (password.length < 6) {
-                authErrorRegister.textContent = 'Wachtwoord moet minimaal 6 tekens lang zijn.';
-                return;
-            }
-
-            await signUpUser(email, password, displayName);
+            await signUpUser(registerEmailInput.value, registerPasswordInput.value, registerDisplayNameInput.value);
         });
     }
 
@@ -256,8 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
         signOutButton.addEventListener('click', signOutUser);
     }
 
-    // Toon initieel het laadscherm totdat onAuthStateChanged is afgehandeld
-    if (loadingScreen) {
-        loadingScreen.style.display = 'flex';
-    }
+    // Toon laadscherm bij opstarten
+    if (loadingScreen) loadingScreen.style.display = 'flex';
 });
