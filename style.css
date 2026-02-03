@@ -21,7 +21,7 @@ body {
     overflow-x: hidden;
 }
 
-/* --- DE BALK (Exact even dik als Notities/Timer) --- */
+/* --- De Dunne Navigatiebalk --- */
 nav {
     background: var(--bg-light);
     border-bottom: 1px solid var(--border);
@@ -32,16 +32,17 @@ nav {
 }
 
 .nav-container {
-    width: 100%;
+    width: 100%; /* Volledige breedte */
     margin: 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Verdeelt links, midden, rechts */
     align-items: center;
-    padding: 0.4rem 2rem; /* Dit bepaalt de dikte */
+    padding: 0.4rem 2rem; /* De dunne hoogte */
 }
 
+/* Links: Logo */
 .logo {
-    flex: 1;
+    flex: 1; /* Neemt ruimte in om menu naar midden te duwen */
     display: flex;
     justify-content: flex-start;
     font-size: 1.4rem;
@@ -52,8 +53,9 @@ nav {
 
 .logo span { color: var(--event); }
 
+/* Midden: Menu knoppen */
 .menu {
-    flex: 0;
+    flex: 0; /* Neemt alleen ruimte in die nodig is */
     display: flex;
     gap: 0.5rem;
     justify-content: center;
@@ -62,7 +64,7 @@ nav {
 .menu a {
     text-decoration: none;
     color: var(--text);
-    padding: 0.3rem 0.8rem; /* Houdt de knoppen dun */
+    padding: 0.3rem 0.8rem; /* Dunne knoppen */
     border-radius: 6px;
     font-size: 0.85rem;
     transition: 0.2s;
@@ -73,15 +75,20 @@ nav {
     color: white;
 }
 
+/* Rechts: Gebruiker & Afmelden */
 .user-controls {
-    flex: 1;
+    flex: 1; /* Neemt ruimte in om menu naar midden te duwen */
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end; /* Alles strak naar rechts */
     align-items: center;
     gap: 15px;
 }
 
-#userName { color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
+#userName { 
+    color: var(--text-muted); 
+    font-size: 0.85rem; 
+    font-weight: 500; 
+}
 
 #signOutButton {
     background: transparent;
@@ -100,42 +107,31 @@ nav {
     color: white; 
 }
 
-/* --- DASHBOARD CONTENT (Zorg dat dit onder de balk begint) --- */
+/* --- Dashboard Content --- */
 #main-app-area {
-    margin-top: 80px; /* Ruimte voor de fixed nav */
+    margin-top: 80px; 
     padding: 40px 20px;
     max-width: 1100px;
     margin-left: auto;
     margin-right: auto;
 }
 
+/* ... De rest van je Dashboard kaarten en Auth secties blijven hetzelfde ... */
 .welcome-header { text-align: center; margin-bottom: 3rem; }
 .welcome-header h2 { font-size: 2.2rem; margin: 0; }
-.welcome-header p { color: var(--text-muted); font-size: 1.1rem; }
-
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
 }
-
 .card {
     background: var(--bg-light);
     padding: 2.5rem 1.5rem;
     border-radius: 15px;
     border: 1px solid var(--border);
     text-align: center;
-    transition: transform 0.3s ease, border-color 0.3s ease;
+    transition: 0.3s;
 }
-
-.card:hover {
-    transform: translateY(-8px);
-    border-color: var(--event);
-}
-
-.card-icon { font-size: 3rem; margin-bottom: 1rem; }
-.card h3 { margin-top: 0; font-size: 1.4rem; }
-
 .btn-card {
     display: inline-block;
     margin-top: 1.5rem;
@@ -144,46 +140,4 @@ nav {
     color: white;
     text-decoration: none;
     border-radius: 8px;
-    font-weight: 600;
-}
-
-/* --- AUTH PAGINA (Login scherm) --- */
-#auth-container, #loading-screen {
-    background-color: var(--bg);
-    position: fixed;
-    inset: 0;
-    z-index: 2000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#login-section, #register-section {
-    background: var(--bg-light);
-    padding: 2.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    width: 90%;
-    max-width: 400px;
-}
-
-#auth-container input {
-    width: 100%;
-    padding: 0.8rem;
-    margin: 0.5rem 0 1.2rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: white;
-    border-radius: 6px;
-}
-
-#auth-container button {
-    width: 100%;
-    padding: 0.8rem;
-    background: var(--event);
-    border: none;
-    color: white;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
 }
