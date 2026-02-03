@@ -1,7 +1,7 @@
 // Importeer de functies die je nodig hebt van de SDK's
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Jouw web-app's Firebase configuratie
 const firebaseConfig = {
@@ -39,7 +39,7 @@ const registerPasswordInput = document.getElementById('registerPassword');
 const registerPasswordConfirmInput = document.getElementById('registerPasswordConfirm');
 const authErrorRegister = document.getElementById('authErrorRegister');
 
-// UI toggle links (tussen aanmelden en registreren)
+// UI toggle links
 const showRegisterLink = document.getElementById('showRegister');
 const showLoginLink = document.getElementById('showLogin');
 
@@ -48,6 +48,9 @@ const appContent = document.getElementById('app-content');
 const userNameSpanTopBar = document.getElementById('userName');
 const userNameSpanMainContent = document.getElementById('userName-content');
 const signOutButton = document.getElementById('signOutButton');
+const pomodoroCountDisplay = document.getElementById('total-pomodoros');
+
+let statsUnsubscribe = null; // Om de listener op te schonen bij uitloggen
 
 // Functie om de UI aan te passen op basis van de authenticatiestatus
 function updateUI(user) {
@@ -56,11 +59,21 @@ function updateUI(user) {
         authContainer.style.display = 'none';
         appContent.style.display = 'block';
 
-        const displayUserName = user.displayName || user.email || 'Gebruiker';
+        const displayUserName = user.displayName || user.email.split('@')[0];
         if (userNameSpanTopBar) userNameSpanTopBar.textContent = displayUserName;
         if (userNameSpanMainContent) userNameSpanMainContent.textContent = displayUserName;
+
+        // LIVE DATA: Luister naar Pomodoro sessies
+        const statsRef = doc(db, "users", user.uid, "stats", "pomodoro");
+        statsUnsubscribe = onSnapshot(statsRef, (docSnap) => {
+            if (pomodoroCountDisplay) {
+                pomodoroCountDisplay.textContent = docSnap.exists() ? (docSnap.data().totalSessions || 0) : 0;
+            }
+        });
+
     } else {
         // Gebruiker is NIET aangemeld
+        if (statsUnsubscribe) statsUnsubscribe(); // Stop met luisteren naar database
         authContainer.style.display = 'flex';
         appContent.style.display = 'none';
         
@@ -84,8 +97,6 @@ async function signInUser(email, password) {
     loginForm.reset();
   } catch (error) {
     const errorCode = error.code;
-    console.error("Fout bij aanmelden:", errorCode);
-    // Foutmeldingen voor de gebruiker
     if (errorCode === 'auth/user-not-found' || errorCode === 'auth/invalid-credential') {
         authErrorLogin.textContent = 'Ongeldige e-mail of wachtwoord.';
     } else {
@@ -105,7 +116,6 @@ async function signUpUser(email, password, displayName = null) {
         }
         registerForm.reset();
     } catch (error) {
-        console.error("Fout bij registreren:", error.code);
         authErrorRegister.textContent = 'Registratie mislukt. Gebruik een geldig e-mailadres.';
     }
 }
@@ -121,7 +131,6 @@ async function signOutUser() {
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-    // Wisselen tussen Login en Registratie schermen
     if (showRegisterLink) {
         showRegisterLink.addEventListener('click', (e) => {
             e.preventDefault();
@@ -138,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Submit logica
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -161,6 +169,5 @@ document.addEventListener('DOMContentLoaded', () => {
         signOutButton.addEventListener('click', signOutUser);
     }
 
-    // Toon laadscherm bij opstarten
     if (loadingScreen) loadingScreen.style.display = 'flex';
 });
