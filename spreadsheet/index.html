@@ -3,30 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hulpmiddel Leren - Pomodoro</title>
+    <title>Focus Timer - ProductiviteitHub</title>
     <link rel="stylesheet" href="style.css">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
-
-    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
     <nav>
         <div class="nav-container">
             <a href="../index.html" class="logo">Productiviteit<span>Hub</span></a>
-            <div class="menu" id="navMenu">
+            <div class="menu">
                 <a href="../index.html">Home</a>
                 <a href="../notitie/index.html">Notities</a>
                 <a href="../agenda/index.html">Agenda</a>
                 <a href="index.html" class="active">Hulpmiddel Leren</a>
             </div>
+            <div class="user-controls">
+                <span id="userNameDisplay">Laden...</span>
+            </div>
         </div>
     </nav>
 
     <main class="container">
-        <div class="timer-container">
+        <div class="timer-section">
             <h1>Pomodoro Focus</h1>
-            <p>Concentreer je op je werk. We houden je voortgang bij.</p>
+            <p class="subtitle">Concentreer je op je werk. Wij houden je voortgang bij.</p>
 
             <div class="timer-circle" id="timerDisplay">25:00</div>
 
