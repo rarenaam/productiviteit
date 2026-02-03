@@ -21,7 +21,7 @@ body {
     overflow-x: hidden;
 }
 
-/* --- Navigatiebalk --- */
+/* --- Navigatiebalk (Full Width, Logo links, Menu midden, User rechts) --- */
 nav {
     background: var(--bg-light);
     border-bottom: 1px solid var(--border);
@@ -32,15 +32,18 @@ nav {
 }
 
 .nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.8rem 1.5rem;
+    padding: 0.8rem 2rem;
 }
 
 .logo {
+    flex: 1; /* Neemt ruimte links in */
+    display: flex;
+    justify-content: flex-start;
     font-size: 1.4rem;
     font-weight: bold;
     text-decoration: none;
@@ -49,7 +52,12 @@ nav {
 
 .logo span { color: var(--event); }
 
-.menu { display: flex; gap: 0.5rem; }
+.menu {
+    flex: 0; /* Neemt alleen benodigde ruimte in het midden */
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
 
 .menu a {
     text-decoration: none;
@@ -65,7 +73,13 @@ nav {
     color: white;
 }
 
-.user-controls { display: flex; align-items: center; gap: 15px; }
+.user-controls {
+    flex: 1; /* Neemt ruimte rechts in */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
 
 #userName { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; }
 
@@ -76,9 +90,14 @@ nav {
     padding: 0.4rem 1rem;
     border-radius: 6px;
     cursor: pointer;
+    transition: 0.2s;
 }
 
-#signOutButton:hover { background: var(--error); border-color: var(--error); color: white; }
+#signOutButton:hover { 
+    background: var(--error); 
+    border-color: var(--error); 
+    color: white; 
+}
 
 /* --- Dashboard / Main Area --- */
 #main-app-area {
@@ -129,8 +148,8 @@ nav {
 
 .btn-card:hover { background: var(--event-hover); }
 
-/* --- Auth Pagina Styling --- */
-#auth-container {
+/* --- Auth & Loading Pagina's --- */
+#auth-container, #loading-screen {
     background-color: var(--bg);
     position: fixed;
     inset: 0;
@@ -171,15 +190,3 @@ nav {
 }
 
 .auth-error-message { color: var(--error); font-size: 0.85rem; margin-top: 1rem; text-align: center; }
-
-/* --- Laadscherm --- */
-#loading-screen {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 3000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-}
