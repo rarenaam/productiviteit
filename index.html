@@ -3,42 +3,45 @@
 <head>
     <title>Productiviteit</title>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://www.gstatic.com https://apis.google.com 'unsafe-eval';">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Laadscherm - zichtbaar bij het laden, verdwijnt zodra auth status bekend is -->
     <div id="loading-screen">
         <p>Laden...</p>
     </div>
 
-    <!-- Container voor het aanmeld/registratieformulier (wordt full-screen overlay door CSS) -->
     <div id="auth-container">
-        <!-- Login Form -->
         <div id="login-section">
             <h2>Aanmelden</h2>
             <form id="loginForm">
-                <label for="email">E-mail:</label>
+                <label for="loginEmail">E-mail:</label>
                 <input type="email" id="loginEmail" required><br><br>
-                <label for="password">Wachtwoord:</label>
+                
+                <label for="loginPassword">Wachtwoord:</label>
                 <input type="password" id="loginPassword" required><br><br>
+                
                 <button type="submit">Aanmelden</button>
                 <p id="authErrorLogin" class="auth-error-message"></p>
             </form>
             <p class="auth-toggle">Nog geen account? <a href="#" id="showRegister">Registreer hier</a></p>
         </div>
 
-        <!-- Registration Form (Standaard verborgen) -->
         <div id="register-section" style="display:none;">
             <h2>Registreren</h2>
             <form id="registerForm">
                 <label for="registerDisplayName">Weergavenaam (optioneel):</label>
                 <input type="text" id="registerDisplayName"><br><br>
+                
                 <label for="registerEmail">E-mail:</label>
                 <input type="email" id="registerEmail" required><br><br>
+                
                 <label for="registerPassword">Wachtwoord:</label>
                 <input type="password" id="registerPassword" required><br><br>
+                
                 <label for="registerPasswordConfirm">Bevestig Wachtwoord:</label>
                 <input type="password" id="registerPasswordConfirm" required><br><br>
+                
                 <button type="submit">Account aanmaken</button>
                 <p id="authErrorRegister" class="auth-error-message"></p>
             </form>
@@ -46,30 +49,23 @@
         </div>
     </div>
 
-    <!-- Hoofdcontent van de applicatie - ALLEEN zichtbaar als gebruiker is aangemeld -->
     <div id="app-content">
-        <!-- Dit is de rechthoek bovenaan (topbalk) -->
         <div class="rechthoek">
-            <!-- Navigatieknoppen -->
             <a href="index.html" class="button" id="buttonHome">home</a>
             <a href="/productiviteit/agenda/" class="button" id="buttonAgenda">agenda</a>
             <a href="/productiviteit/notitie/" class="button" id="buttonNotitie">notitie</a>
             <a href="/productiviteit/spreadsheet/" class="button" id="buttonSpreadsheet">spreadsheet</a>
             
-            <!-- Gebruikersnaam en afmeldknop, nu in de topbalk -->
-            <span id="userName" style="position: absolute; right: 120px; top: 50%; transform: translateY(-50%); color: var(--text);"></span>
-            <button id="signOutButton" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">Afmelden</button>
+            <span id="userName"></span>
+            <button id="signOutButton">Afmelden</button>
         </div>
 
-        <!-- Dit is de daadwerkelijke content onder de topbalk en knoppen -->
         <div id="main-app-area">
             <h2>Welkom, <span id="userName-content"></span>!</h2>
             <p>Dit is je persoonlijke content. Je bent aangemeld.</p>
-            <!-- Hier komt de rest van je app-specifieke content, zoals agenda, notitie, etc. -->
         </div>
     </div>
 
-    <!-- Link naar je JavaScript-bestand met alle logica -->
     <script type="module" src="app.js"></script>
 </body>
 </html>
