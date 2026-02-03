@@ -37,7 +37,8 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.8rem 2rem;
+    padding: 0.4rem 2rem; /* VERLAAGD van 0.8 naar 0.4 */
+    box-sizing: border-box;
 }
 
 .logo {
@@ -62,9 +63,9 @@ nav {
 .menu a {
     text-decoration: none;
     color: var(--text);
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 0.8rem; /* VERLAAGD van 0.5 naar 0.3 */
     border-radius: 6px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;    /* Iets kleinere tekst helpt ook */
     transition: 0.2s;
 }
 
