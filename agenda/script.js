@@ -88,7 +88,7 @@ function render() {
     }
 
     let time = parseTime(weekStart, "08:15");
-    const end = parseTime(weekStart, "17:15");
+    const end = parseTime(weekStart, "22:35");
 
     while (time < end) {
         const paused = isInPause(time, weekStart);
