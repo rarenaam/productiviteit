@@ -1,52 +1,49 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notities - ProductiviteitHub</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" sizes="512x512" href="../ProductiviteitHub.png">
-    <link rel="apple-touch-icon" href="../ProductiviteitHub.png">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notities - ProductiviteitHub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="512x512" href="../ProductiviteitHub.png">
+    <link rel="apple-touch-icon" href="../ProductiviteitHub.png">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://www.gstatic.com; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
 </head>
 <body>
 
-    <nav>
-        <div class="nav-container">
-            <a href="../index.html" class="logo">Productiviteit<span>Hub</span></a>
-            <div class="menu">
-                <a href="../index.html">Home</a>
-                <a href="index.html" class="active">Notities</a>
-                <a href="../agenda/index.html">Agenda</a>
-                <a href="../hulpmiddel/index.html">Hulpmiddel Leren</a>
-            </div>
-            <div class="user-controls">
-                <span id="userNameDisplay">Laden...</span>
-            </div>
-        </div>
-    </nav>
+    <nav>
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Productiviteit<span>Hub</span></a>
+            <div class="menu">
+                <a href="../index.html">Home</a>
+                <a href="index.html" class="active">Notities</a>
+                <a href="../agenda/index.html">Agenda</a>
+                <a href="../hulpmiddel/index.html">Hulpmiddel Leren</a>
+            </div>
+            <div class="user-controls">
+                <span id="userNameDisplay">Laden...</span>
+            </div>
+        </div>
+    </nav>
 
-    <div class="container">
-        <div class="sidebar">
-            <button id="addNoteBtn" disabled>+ Nieuwe Notitie</button>
-            <ul id="notesList"></ul>
-        </div>
+    <div class="container">
+        <div class="sidebar">
+            <button id="addNoteBtn" disabled>+ Nieuwe Notitie</button>
+            <ul id="notesList"></ul>
+        </div>
 
-        <div class="main">
-            <div id="lessonLink" style="margin-bottom: 15px; padding: 10px; background: #f0f7ff; border-radius: 8px; border: 1px solid #d0e3ff; font-size: 14px;">
-                💡 Wil je <a href="https://rarenaam.github.io/japanese" target="_blank" style="color: #007bff; font-weight: bold; text-decoration: none;">Japans leren</a>? Of begin hieronder met je samenvatting.
-            </div>
+        <div class="main">
+            <input id="noteTitle" placeholder="Titel van je notitie" disabled />
+            <textarea id="noteContent" placeholder="Begin met het schrijven van je samenvatting..." disabled></textarea>
+            <div class="actions">
+                <button id="deleteNoteBtn" disabled>Verwijder Notitie</button>
+            </div>
+        </div>
+    </div>
 
-            <input id="noteTitle" placeholder="Titel van je notitie" disabled />
-            
-            <textarea id="noteContent" placeholder="Begin met het schrijven van je samenvatting..." disabled></textarea>
-            
-            <div class="actions">
-                <button id="deleteNoteBtn" disabled>Verwijder Notitie</button>
-            </div>
-        </div>
-    </div>
-
-    <script type="module" src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
+
+
+ik wil dat de link kan worden weg gehaald maar dat je er wel op kan klikken
