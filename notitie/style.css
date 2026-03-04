@@ -1,190 +1,261 @@
-/* --- Basis Instellingen & Variabelen (Matcht met Home) --- */
 :root {
-    --bg: #0f172a;
-    --bg-light: #1e293b;
-    --border: #334155;
-    --text: #e5e7eb;
-    --text-muted: #94a3b8;
-    --event: #2563eb;
-    --event-hover: #1d4ed8;
-    --error: #ef4444;
-    --nav-height: 60px;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  --bg: #0f172a;
+  --bg-light: #1e293b;
+  --border: #334155;
+  --text: #e5e7eb;
+  --event: #2563eb;
+  --disabled-bg: #475569; /* Nieuwe variabele voor disabled achtergrond */
 }
 
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    height: 100vh;
-    overflow: hidden; /* Zorgt dat de pagina niet dubbel scrollt */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden; /* Voorkomt horizontale scrollbalk door navMenu */
 }
 
-/* --- Navigatie (De "Slanke" Versie) --- */
-nav {
-    background: var(--bg-light);
-    border-bottom: 1px solid var(--border);
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: var(--nav-height);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-}
-
-.nav-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1.5rem;
-}
-
-.logo { font-size: 1.4rem; font-weight: bold; text-decoration: none; color: var(--text); }
-.logo span { color: var(--event); }
-
-.menu { display: flex; gap: 0.5rem; }
-.menu a { 
-    text-decoration: none; 
-    color: var(--text); 
-    padding: 0.5rem 1rem; 
-    border-radius: 6px; 
-    font-size: 0.9rem; 
-    transition: 0.2s; 
-}
-.menu a.active, .menu a:hover { background: var(--event); color: white; }
-
-#userNameDisplay { color: var(--text-muted); font-size: 0.85rem; }
-
-/* --- Hoofd Layout --- */
+/* Container met flex voor sidebar + main */
 .container {
-    display: flex;
-    height: calc(100vh - var(--nav-height));
-    margin-top: var(--nav-height);
+  display: flex;
+  height: 100vh;
 }
 
-/* Sidebar Styling */
+/* Hamburger button */
+#hamburgerBtn {
+  position: fixed;
+  left: 220px; /* Aangepast: Zorgt dat het menu (200px breed) de knop niet bedekt */
+  top: 10px;
+  z-index: 5000;
+  background: var(--event);
+  color: var(--text);
+  font-size: 20px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 1px;
+  transition: background 0.2s ease; /* Gladde overgang voor hover */
+}
+
+#hamburgerBtn:hover {
+  background: #1e40af; /* Donkerdere kleur bij hover */
+}
+
+/* Navigatie menu (achter hamburger) */
+#navMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;       /* volledige hoogte */
+  width: 200px;        /* breedte sidebar */
+  background: var(--bg-light);
+  padding-top: 60px;   /* ruimte voor hamburger knop */
+  border-right: 1px solid var(--border);
+  
+  transform: translateX(-100%); /* begin buiten beeld */
+  transition: transform 0.3s ease; /* transitie bij toggle */
+  z-index: 4000;
+  display: flex;
+  flex-direction: column;
+}
+
+#navMenu.show {
+  transform: translateX(0); /* schuift in beeld */
+}
+
+#navMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#navMenu li {
+  margin-bottom: 10px;
+}
+
+#navMenu a {
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  padding: 10px 16px;
+  border-radius: 0px;
+  transition: background 0.2s ease; /* Gladde overgang voor hover */
+}
+
+#navMenu a:hover {
+  background: var(--event);
+}
+
+/* Sidebar (altijd zichtbaar) */
 .sidebar {
-    width: 280px;
-    border-right: 1px solid var(--border);
-    background: var(--bg-light);
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
+  width: 250px;
+  border-right: 1px solid var(--border);
+  padding: 10px;
+  box-sizing: border-box;
+  background: var(--bg-light);
+  z-index: 2000; /* onder navigatie */
+  display: flex; /* Flexbox voor layout in sidebar */
+  flex-direction: column;
 }
 
-#addNoteBtn {
-    background: var(--event);
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: 0.2s;
+.sidebar h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
-#addNoteBtn:hover:not(:disabled) { background: var(--event-hover); }
-#addNoteBtn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--border); }
-
-#notesList {
-    list-style: none;
-    overflow-y: auto;
-    flex: 1;
+.sidebar button {
+  width: 100%;
+  margin-bottom: 10px;
+  background: var(--event);
+  color: var(--text);
+  border: none;
+  padding: 8px 12px; /* Iets grotere padding voor knoppen */
+  cursor: pointer;
+  border-radius: 4px; /* Zachte afronding */
+  transition: background 0.2s ease; /* Gladde overgang voor hover */
 }
 
-#notesList li { margin-bottom: 8px; }
-
-#notesList button {
-    width: 100%;
-    text-align: left;
-    padding: 12px;
-    background: transparent;
-    border: 1px solid transparent;
-    color: var(--text-muted);
-    border-radius: 6px;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: 0.2s;
+.sidebar button:hover {
+  background: #1e40af;
 }
 
-#notesList button:hover { background: rgba(255,255,255,0.05); color: var(--text); }
-
-.active-note-btn {
-    background: rgba(37, 99, 235, 0.1) !important;
-    color: var(--event) !important;
-    border-color: var(--event) !important;
-    font-weight: bold;
+/* Styling voor disabled knoppen in de sidebar */
+.sidebar button:disabled {
+  background-color: var(--disabled-bg) !important;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
-/* --- De Editor Area (Waar de invoervelden staan) --- */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  flex-grow: 1; /* Neemt resterende ruimte in */
+}
+
+.sidebar li {
+  margin-bottom: 5px;
+}
+
+.sidebar li button {
+  width: 100%;
+  text-align: left;
+  padding: 8px; /* Iets grotere padding */
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  border-radius: 4px; /* Zachte afronding */
+  transition: background 0.2s ease; /* Gladde overgang voor hover */
+}
+
+.sidebar li button:hover {
+  background-color: var(--event);
+  color: var(--text);
+}
+
+/* Styling voor wanneer er geen notities zijn */
+.empty-state {
+  text-align: center;
+  color: #a0aec0; /* Lichtere, grijze tekst */
+  padding: 20px;
+  font-style: italic;
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+
+/* Main content */
 .main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 40px;
-    background: var(--bg);
+  flex: 1;
+  padding: 20px; /* Iets meer padding */
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
 }
 
-/* Fix voor de invoervelden styling */
 #noteTitle, #noteContent {
-    width: 100%;
-    background: transparent;
-    border: none;
-    color: var(--text);
-    font-family: inherit;
-    outline: none;
-    display: block;
+  margin-bottom: 15px; /* Iets meer ruimte */
+  padding: 10px; /* Meer padding */
+  background: var(--bg-light);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px; /* Zachte afronding */
+  font-size: 1em;
 }
 
-#noteTitle {
-    font-size: 2.2rem;
-    font-weight: bold;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    border-bottom: 2px solid var(--border);
+#noteTitle:focus, #noteContent:focus {
+  outline: none;
+  border-color: var(--event); /* Benadruk focus met event kleur */
 }
-
-#noteTitle:focus { border-bottom-color: var(--event); }
 
 #noteContent {
-    flex: 1;
-    font-size: 1.15rem;
-    line-height: 1.7;
-    resize: none;
+  flex: 1;
+  resize: vertical; /* Alleen verticaal resizen toestaan */
+  line-height: 1.5; /* Leesbaarder tekst */
 }
 
-/* Knoppen onderaan */
-.actions {
-    display: flex;
-    justify-content: flex-start;
-    padding-top: 20px;
+/* Styling voor disabled input en textarea */
+#noteTitle:disabled,
+#noteContent:disabled {
+  background-color: var(--disabled-bg);
+  color: #a0aec0; /* Lichtere tekst voor disabled velden */
+  cursor: not-allowed;
+  opacity: 0.7;
+  border-color: var(--border);
 }
 
 #deleteNoteBtn {
-    background: transparent;
-    color: var(--error);
-    border: 1px solid var(--error);
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
+  width: auto; /* Knop past zich aan inhoud aan */
+  padding: 8px 15px; /* Meer padding */
+  align-self: flex-start; /* Links uitlijnen */
+  cursor: pointer;
+  background: #b91c1c; /* Rood voor verwijderen */
+  color: white;
+  border: none;
+  border-radius: 4px; /* Zachte afronding */
+  transition: background 0.2s ease; /* Gladde overgang voor hover */
 }
 
-#deleteNoteBtn:hover:not(:disabled) {
-    background: var(--error);
-    color: white;
+#deleteNoteBtn:hover {
+  background: #991b1b;
 }
 
-#deleteNoteBtn:disabled { opacity: 0.2; cursor: not-allowed; }
+/* Styling voor disabled delete knop */
+#deleteNoteBtn:disabled {
+  background-color: var(--disabled-bg) !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Media query voor kleinere schermen */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    position: absolute;
+    height: auto;
+    max-height: 50vh; /* Max hoogte voor sidebar op kleine schermen */
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .container {
+    flex-direction: column;
+  }
+
+  .main {
+    margin-top: 50vh; /* Zorg dat main content onder de sidebar begint */
+    flex: 1;
+  }
+
+  #hamburgerBtn {
+    left: 10px; /* Verplaats hamburger naar linksboven op kleine schermen */
+    top: 10px;
+  }
+
+  #navMenu {
+    width: 100%; /* Volledige breedte op kleine schermen */
+  }
+}
