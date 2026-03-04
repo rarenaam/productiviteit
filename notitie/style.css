@@ -9,16 +9,21 @@
     --error: #ef4444;
 }
 
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background: var(--bg);
-    color: var(--text);
-    overflow: hidden; /* Zorgt dat alleen de notitielijst/content scrollt */
 }
 
-/* --- Navigatie (Matcht met Home/Timer) --- */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden; /* Voorkomt dubbele scrollbars */
+    height: 100vh;
+}
+
+/* --- Navigatie (Compact & Uniform) --- */
 nav {
     background: var(--bg-light);
     border-bottom: 1px solid var(--border);
@@ -26,29 +31,56 @@ nav {
     top: 0;
     width: 100%;
     z-index: 1000;
+    height: 60px; /* Vaste hoogte voor uniformiteit */
+    display: flex;
+    align-items: center;
 }
 
 .nav-container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.8rem 1.5rem;
+    padding: 0 1.5rem;
 }
 
-.logo { font-size: 1.4rem; font-weight: bold; text-decoration: none; color: var(--text); }
+.logo { 
+    font-size: 1.4rem; 
+    font-weight: bold; 
+    text-decoration: none; 
+    color: var(--text); 
+}
+
 .logo span { color: var(--event); }
+
 .menu { display: flex; gap: 0.5rem; }
-.menu a { text-decoration: none; color: var(--text); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; transition: 0.2s; }
-.menu a.active, .menu a:hover { background: var(--event); color: white; }
-#userNameDisplay { color: var(--text-muted); font-size: 0.85rem; }
+
+.menu a { 
+    text-decoration: none; 
+    color: var(--text); 
+    padding: 0.5rem 1rem; 
+    border-radius: 6px; 
+    font-size: 0.9rem; 
+    transition: 0.2s; 
+}
+
+.menu a.active, .menu a:hover { 
+    background: var(--event); 
+    color: white; 
+}
+
+#userNameDisplay { 
+    color: var(--text-muted); 
+    font-size: 0.85rem; 
+}
 
 /* --- Notitie Layout --- */
 .container {
     display: flex;
-    height: calc(100vh - 65px);
-    margin-top: 65px; /* Ruimte onder nav */
+    height: calc(100vh - 60px); /* Vult de rest van het scherm onder de nav */
+    margin-top: 60px; /* Start exact onder de nav */
 }
 
 .sidebar {
@@ -69,15 +101,18 @@ nav {
     font-weight: bold;
     cursor: pointer;
     margin-bottom: 20px;
+    transition: 0.2s;
 }
 
-#addNoteBtn:disabled { background: var(--border); cursor: not-allowed; }
+#addNoteBtn:hover:not(:disabled) { background: var(--event-hover); }
+#addNoteBtn:disabled { background: var(--border); cursor: not-allowed; opacity: 0.5; }
 
 #notesList {
     list-style: none;
     padding: 0;
     margin: 0;
     overflow-y: auto;
+    flex: 1;
 }
 
 #notesList li { margin-bottom: 8px; }
@@ -94,11 +129,11 @@ nav {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: 0.2s;
 }
 
-#notesList button:hover { background: rgba(255,255,255,0.05); }
+#notesList button:hover { background: rgba(255,255,255,0.05); color: var(--text); }
 
-/* De actieve notitie in de lijst */
 .active-note-btn {
     background: rgba(37, 99, 235, 0.1) !important;
     color: var(--event) !important;
@@ -110,8 +145,9 @@ nav {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 30px;
+    padding: 40px;
     gap: 20px;
+    background: var(--bg);
 }
 
 #noteTitle {
@@ -122,9 +158,11 @@ nav {
     font-size: 2rem;
     font-weight: bold;
     padding-bottom: 10px;
+    width: 100%;
 }
 
 #noteTitle:focus { outline: none; border-color: var(--event); }
+#noteTitle:disabled { border-bottom-style: dashed; opacity: 0.5; }
 
 #noteContent {
     flex: 1;
@@ -134,11 +172,17 @@ nav {
     font-size: 1.1rem;
     line-height: 1.6;
     resize: none;
+    width: 100%;
 }
 
 #noteContent:focus { outline: none; }
+#noteContent:disabled { opacity: 0.5; }
 
-.actions { display: flex; justify-content: flex-start; }
+.actions { 
+    display: flex; 
+    justify-content: flex-start; 
+    padding-top: 20px;
+}
 
 #deleteNoteBtn {
     background: transparent;
@@ -147,7 +191,15 @@ nav {
     padding: 8px 16px;
     border-radius: 6px;
     cursor: pointer;
+    transition: 0.2s;
 }
 
-#deleteNoteBtn:hover:not(:disabled) { background: var(--error); color: white; }
-#deleteNoteBtn:disabled { opacity: 0.3; cursor: not-allowed; }
+#deleteNoteBtn:hover:not(:disabled) { 
+    background: var(--error); 
+    color: white; 
+}
+
+#deleteNoteBtn:disabled { 
+    opacity: 0.2; 
+    cursor: not-allowed; 
+}
